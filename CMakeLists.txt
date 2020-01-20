@@ -162,10 +162,6 @@ add_subdirectory( programs )
 add_subdirectory( scripts )
 add_subdirectory( tools )
 
-if (NOT DISABLE_WASM_SPEC_TESTS)
-add_subdirectory( eosio-wasm-spec-tests/generated-tests )
-endif()
-
 install_directory_permissions(DIRECTORY ${CMAKE_INSTALL_FULL_SYSCONFDIR}/eosio)
 
 install(FILES testnet.template DESTINATION ${CMAKE_INSTALL_FULL_SYSCONFDIR}/eosio/launcher)
