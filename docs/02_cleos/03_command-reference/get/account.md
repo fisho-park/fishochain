@@ -16,8 +16,8 @@ Retrieves an account from the blockchain
 $ cleos get account eosio
 privileged: true
 permissions: 
-     owner     1:    1 EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
-        active     1:    1 EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+     owner     1:    1 FOC6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
+        active     1:    1 FOC6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV
 memory: 
      quota:        -1 bytes  used:      1.22 Mb   
 
@@ -62,7 +62,7 @@ $ cleos get account eosio --json
       "required_auth": {
         "threshold": 1,
         "keys": [{
-            "key": "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV",
+            "key": "FOC6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV",
             "weight": 1
           }
         ],
@@ -75,7 +75,7 @@ $ cleos get account eosio --json
       "required_auth": {
         "threshold": 1,
         "keys": [{
-            "key": "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV",
+            "key": "FOC6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV",
             "weight": 1
           }
         ],

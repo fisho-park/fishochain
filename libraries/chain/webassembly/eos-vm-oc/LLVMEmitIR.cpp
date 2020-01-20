@@ -1,5 +1,5 @@
 /*
-The EOS VM Optimized Compiler was created in part based on WAVM
+The FOC VM Optimized Compiler was created in part based on WAVM
 https://github.com/WebAssembly/wasm-jit-prototype
 subject the following:
 

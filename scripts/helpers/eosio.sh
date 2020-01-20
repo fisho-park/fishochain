@@ -119,7 +119,7 @@ function previous-install-prompt() {
 
 function resources() {
     echo "${COLOR_CYAN}FOC website:${COLOR_NC} https://eos.io"
-    echo "${COLOR_CYAN}FOC Telegram channel:${COLOR_NC} https://t.me/EOSProject"
+    echo "${COLOR_CYAN}FOC Telegram channel:${COLOR_NC} https://t.me/FOCProject"
     echo "${COLOR_CYAN}FOC resources:${COLOR_NC} https://eos.io/resources/"
     echo "${COLOR_CYAN}FOC Stack Exchange:${COLOR_NC} https://eosio.stackexchange.com"
 }

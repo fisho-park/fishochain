@@ -275,7 +275,7 @@ Config Options for eosio::net_plugin:
                                         
   --p2p-max-nodes-per-host arg (=1)     Maximum number of client nodes from any
                                         single IP address
-  --agent-name arg (="EOS Test Agent")  The name supplied to identify this node
+  --agent-name arg (="FOC Test Agent")  The name supplied to identify this node
                                         amongst the peers.
   --allowed-connection arg (=any)       Can be 'any' or 'producers' or 
                                         'specified' or 'none'. If 'specified', 
@@ -348,7 +348,7 @@ Config Options for eosio::producer_plugin:
                                         instead) Tuple of [public key, WIF 
                                         private key] (may specify multiple 
                                         times)
-  --signature-provider arg (=EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV=KEY:5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3)
+  --signature-provider arg (=FOC6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV=KEY:5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3)
                                         Key=Value pairs in the form 
                                         <public-key>=<provider-spec>
                                         Where:
@@ -360,7 +360,7 @@ Config Options for eosio::producer_plugin:
                                                            form <provider-type>
                                                            :<data>
                                         
-                                           <provider-type> is KEY, or KEOSD
+                                           <provider-type> is KEY, or KFOCD
                                         
                                            KEY:<data>      is a string form of 
                                                            a valid FOC 
@@ -368,7 +368,7 @@ Config Options for eosio::producer_plugin:
                                                            maps to the provided
                                                            public key
                                         
-                                           KEOSD:<data>    is the URL where 
+                                           KFOCD:<data>    is the URL where 
                                                            keosd is available 
                                                            and the approptiate 
                                                            wallet(s) are 

@@ -70,7 +70,7 @@ list(APPEND FOC_WASM_RUNTIMES wabt)   #always enable wabt; it works everywhere a
 if(CMAKE_SIZEOF_VOID_P EQUAL 8 AND NOT WIN32)
    if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux" AND "${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
       list(APPEND FOC_WASM_RUNTIMES eos-vm-oc)
-      # EOS VM OC requires LLVM, but move the check up here to a central location so that the EosioTester.cmakes
+      # FOC VM OC requires LLVM, but move the check up here to a central location so that the EosioTester.cmakes
       # can be created with the exact version found
       find_package(LLVM REQUIRED CONFIG)
       if(LLVM_VERSION_MAJOR VERSION_LESS 7 OR LLVM_VERSION_MAJOR VERSION_GREATER 9)
@@ -151,7 +151,7 @@ endif()
 message( STATUS "Using '${CORE_SYMBOL_NAME}' as CORE symbol name" )
 
 if ("${FOC_ROOT_KEY}" STREQUAL "")
-   set(FOC_ROOT_KEY "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV")
+   set(FOC_ROOT_KEY "FOC6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV")
 endif()
 
 message( STATUS "Using '${FOC_ROOT_KEY}' as public key for 'eosio' account" )
@@ -176,11 +176,11 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/testnet.template ${CMAKE_CURRENT_BINA
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/eosio.version.in ${CMAKE_CURRENT_BINARY_DIR}/eosio.version.hpp)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/eosio.version.hpp DESTINATION ${CMAKE_INSTALL_FULL_INCLUDEDIR})
 
-set(EOS_ROOT_DIR ${CMAKE_BINARY_DIR})
+set(FOC_ROOT_DIR ${CMAKE_BINARY_DIR})
 configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/eosio-config.cmake.in ${CMAKE_BINARY_DIR}/lib/cmake/eosio/eosio-config.cmake @ONLY)
 configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/EosioTesterBuild.cmake.in ${CMAKE_BINARY_DIR}/lib/cmake/eosio/EosioTester.cmake @ONLY)
 
-set(EOS_ROOT_DIR ${CMAKE_INSTALL_PREFIX})
+set(FOC_ROOT_DIR ${CMAKE_INSTALL_PREFIX})
 configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/eosio-config.cmake.in ${CMAKE_BINARY_DIR}/modules/eosio-config.cmake @ONLY)
 install(FILES ${CMAKE_BINARY_DIR}/modules/eosio-config.cmake DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}/cmake/eosio)
 configure_file(${CMAKE_SOURCE_DIR}/CMakeModules/EosioTester.cmake.in ${CMAKE_BINARY_DIR}/modules/EosioTester.cmake @ONLY)

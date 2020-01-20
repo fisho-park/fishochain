@@ -41,9 +41,9 @@ These can be specified from both the command-line or the `config.ini` file:
                                         https://docs.mongodb.com/master/referen
                                         ce/connection-string/. If not specified
                                         then plugin is disabled. Default
-                                        database 'EOS' is used if not specified
+                                        database 'FOC' is used if not specified
                                         in URI. Example: mongodb://127.0.0.1:27
-                                        017/EOS
+                                        017/FOC
   --mongodb-update-via-block-num arg (=0)
                                         Update blocks/block_state with latest
                                         via block number so that duplicates are
@@ -146,7 +146,7 @@ The equivalent of `/v1/history/get_controlled_acounts` with mongo: `db.account_c
 The mongodb equivalent of `/v1/history/get_key_accounts` RPC API endpoint:
 
 ```console
-db.pub_keys.find({"public_key":"EOS7EarnUhcyYqmdnPon8rm7mBCTnBoot6o7fE2WzjvEX2TdggbL3"}).pretty()
+db.pub_keys.find({"public_key":"FOC7EarnUhcyYqmdnPon8rm7mBCTnBoot6o7fE2WzjvEX2TdggbL3"}).pretty()
 ```
 
 ## Dependencies

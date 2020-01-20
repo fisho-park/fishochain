@@ -1,5 +1,5 @@
 if(FOC_ROOT STREQUAL "" OR NOT FOC_ROOT)
-   set(FOC_ROOT "@EOS_ROOT_DIR@")
+   set(FOC_ROOT "@FOC_ROOT_DIR@")
 endif()
 list(APPEND CMAKE_MODULE_PATH ${FOC_ROOT}/lib/cmake/eosio)
 list(APPEND CMAKE_MODULE_PATH ${FOC_ROOT}/lib64/cmake/eosio)

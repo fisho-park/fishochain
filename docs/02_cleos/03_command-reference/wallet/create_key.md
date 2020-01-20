@@ -19,5 +19,5 @@ $ cleos wallet create_key K1
 ## Outputs
 
 ```shell
-Created new private key with a public key of: "EOS67xHKzQArkWZN6rKLCq7NLvaj8kurwxzRxoTVz6cgDJkiWdGug"
+Created new private key with a public key of: "FOC67xHKzQArkWZN6rKLCq7NLvaj8kurwxzRxoTVz6cgDJkiWdGug"
 ```

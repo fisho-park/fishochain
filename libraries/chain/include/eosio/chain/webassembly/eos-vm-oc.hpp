@@ -369,7 +369,7 @@ struct intrinsic_invoker_impl<is_injected, Ret, std::tuple<>, std::tuple<Transla
       catch(...) {
          *reinterpret_cast<std::exception_ptr*>(eos_vm_oc_get_exception_ptr()) = std::current_exception();
       }
-      siglongjmp(*eos_vm_oc_get_jmp_buf(), EOSVMOC_EXIT_EXCEPTION);
+      siglongjmp(*eos_vm_oc_get_jmp_buf(), FOCVMOC_EXIT_EXCEPTION);
       __builtin_unreachable();
    }
 
@@ -408,7 +408,7 @@ struct intrinsic_invoker_impl<is_injected, void_type, std::tuple<>, std::tuple<T
       catch(...) {
          *reinterpret_cast<std::exception_ptr*>(eos_vm_oc_get_exception_ptr()) = std::current_exception();
       }
-      siglongjmp(*eos_vm_oc_get_jmp_buf(), EOSVMOC_EXIT_EXCEPTION);
+      siglongjmp(*eos_vm_oc_get_jmp_buf(), FOCVMOC_EXIT_EXCEPTION);
       __builtin_unreachable();
    }
 
@@ -657,7 +657,7 @@ struct intrinsic_invoker_impl<is_injected, Ret, std::tuple<T &, Inputs...>, std:
 
    template<then_type Then, typename U=T>
    static auto translate_one(Inputs... rest, Translated... translated, I32 ptr) -> std::enable_if_t<std::is_const<U>::value, Ret> {
-      EOS_ASSERT((U32)ptr != 0, wasm_exception, "references cannot be created for null pointers");
+      FOC_ASSERT((U32)ptr != 0, wasm_exception, "references cannot be created for null pointers");
       T &base = *array_ptr_impl<T>((uint32_t)ptr, 1);
 
       if ( reinterpret_cast<uintptr_t>(&base) % alignof(T) != 0 ) {
@@ -671,7 +671,7 @@ struct intrinsic_invoker_impl<is_injected, Ret, std::tuple<T &, Inputs...>, std:
 
    template<then_type Then, typename U=T>
    static auto translate_one(Inputs... rest, Translated... translated, I32 ptr) -> std::enable_if_t<!std::is_const<U>::value, Ret> {
-      EOS_ASSERT((U32)ptr != 0, wasm_exception, "reference cannot be created for null pointers");
+      FOC_ASSERT((U32)ptr != 0, wasm_exception, "reference cannot be created for null pointers");
       T &base = *array_ptr_impl<T>((uint32_t)ptr, 1);
 
       if ( reinterpret_cast<uintptr_t>(&base) % alignof(T) != 0 ) {
@@ -787,8 +787,8 @@ struct intrinsic_function_invoker_wrapper<is_injected, WasmSig, Ret (Cls::*)(Par
 #define __INTRINSIC_NAME(LABEL, SUFFIX) LABEL##SUFFIX
 #define _INTRINSIC_NAME(LABEL, SUFFIX) __INTRINSIC_NAME(LABEL,SUFFIX)
 
-#define _REGISTER_EOSVMOC_INTRINSIC(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)\
-   static eosio::chain::eosvmoc::intrinsic _INTRINSIC_NAME(__intrinsic_fn, __COUNTER__) EOSVMOC_INTRINSIC_INIT_PRIORITY (\
+#define _REGISTER_FOCVMOC_INTRINSIC(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)\
+   static eosio::chain::eosvmoc::intrinsic _INTRINSIC_NAME(__intrinsic_fn, __COUNTER__) FOCVMOC_INTRINSIC_INIT_PRIORITY (\
       MOD "." NAME,\
       eosio::chain::webassembly::eosvmoc::wasm_function_type_provider<WASM_SIG>::type(),\
       (void *)eosio::chain::webassembly::eosvmoc::intrinsic_function_invoker_wrapper<std::string_view(MOD) != "env", WASM_SIG, SIG>::type::fn<&CLS::METHOD>(),\

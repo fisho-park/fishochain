@@ -119,7 +119,7 @@ To uninstall the FOC built/installed binaries and dependencies, run:
 1. [Blog](https://medium.com/eosio)
 1. [Developer Portal](https://developers.eos.io)
 1. [StackExchange for Q&A](https://eosio.stackexchange.com/)
-1. [Community Telegram Group](https://t.me/EOSProject)
+1. [Community Telegram Group](https://t.me/FOCProject)
 1. [Developer Telegram Group](https://t.me/joinchat/EaEnSUPktgfoI-XPfMYtcQ)
 1. [White Paper](https://github.com/FOC/Documentation/blob/master/TechnicalWhitePaper.md)
 1. [Roadmap](https://github.com/FOC/Documentation/blob/master/Roadmap.md)

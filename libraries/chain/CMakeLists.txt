@@ -17,7 +17,7 @@ else()
 endif()
 
 if("eos-vm-oc" IN_LIST FOC_WASM_RUNTIMES)
-   set(CHAIN_EOSVMOC_SOURCES webassembly/eos-vm-oc/code_cache.cpp
+   set(CHAIN_FOCVMOC_SOURCES webassembly/eos-vm-oc/code_cache.cpp
                              webassembly/eos-vm-oc/executor.cpp
                              webassembly/eos-vm-oc/memory.cpp
                              webassembly/eos-vm-oc/intrinsic.cpp
@@ -31,21 +31,21 @@ if("eos-vm-oc" IN_LIST FOC_WASM_RUNTIMES)
 
    if(LLVM_VERSION VERSION_LESS 7.1 AND CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
       enable_language(ASM-LLVMWAR)
-      list(APPEND CHAIN_EOSVMOC_SOURCES webassembly/eos-vm-oc/llvmWARshim.llvmwar)
+      list(APPEND CHAIN_FOCVMOC_SOURCES webassembly/eos-vm-oc/llvmWARshim.llvmwar)
    else()
-      list(APPEND CHAIN_EOSVMOC_SOURCES webassembly/eos-vm-oc/llvmWARshim.cpp)
+      list(APPEND CHAIN_FOCVMOC_SOURCES webassembly/eos-vm-oc/llvmWARshim.cpp)
    endif()
 
    llvm_map_components_to_libnames(LLVM_LIBS support core passes mcjit native orcjit)
    include_directories(${LLVM_INCLUDE_DIRS})
    add_definitions(${LLVM_DEFINITIONS})
 
-   option(EOSVMOC_ENABLE_DEVELOPER_OPTIONS "enable developer options for EOS VM OC" OFF)
+   option(FOCVMOC_ENABLE_DEVELOPER_OPTIONS "enable developer options for FOC VM OC" OFF)
 endif()
 
 if("eos-vm" IN_LIST FOC_WASM_RUNTIMES OR "eos-vm-jit" IN_LIST FOC_WASM_RUNTIMES)
-   set(CHAIN_EOSVM_SOURCES "webassembly/eos-vm.cpp")
-   set(CHAIN_EOSVM_LIBRARIES eos-vm)
+   set(CHAIN_FOCVM_SOURCES "webassembly/eos-vm.cpp")
+   set(CHAIN_FOCVM_LIBRARIES eos-vm)
 endif()
 
 ## SORT .cpp by most likely to change / break compile
@@ -83,8 +83,8 @@ add_library( eosio_chain
               snapshot.cpp
 
              webassembly/wabt.cpp
-             ${CHAIN_EOSVMOC_SOURCES}
-             ${CHAIN_EOSVM_SOURCES}
+             ${CHAIN_FOCVMOC_SOURCES}
+             ${CHAIN_FOCVM_SOURCES}
 
 #             get_config.cpp
 #
@@ -105,7 +105,7 @@ add_library( eosio_chain
              )
 
 target_link_libraries( eosio_chain fc chainbase Logging IR WAST WASM Runtime
-                       softfloat builtins wabt ${CHAIN_EOSVM_LIBRARIES} ${LLVM_LIBS}
+                       softfloat builtins wabt ${CHAIN_FOCVM_LIBRARIES} ${LLVM_LIBS}
                      )
 target_include_directories( eosio_chain
                             PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" "${CMAKE_CURRENT_BINARY_DIR}/include"
@@ -125,9 +125,9 @@ foreach(RUNTIME ${FOC_WASM_RUNTIMES})
    target_compile_definitions(eosio_chain PUBLIC "FOC_${RUNTIMEUC}_RUNTIME_ENABLED")
 endforeach()
 
-if(EOSVMOC_ENABLE_DEVELOPER_OPTIONS)
-   message(WARNING "EOS VM OC Developer Options are enabled; these are NOT supported")
-   target_compile_definitions(eosio_chain PUBLIC FOC_EOS_VM_OC_DEVELOPER)
+if(FOCVMOC_ENABLE_DEVELOPER_OPTIONS)
+   message(WARNING "FOC VM OC Developer Options are enabled; these are NOT supported")
+   target_compile_definitions(eosio_chain PUBLIC FOC_VM_OC_DEVELOPER)
 endif()
 
 install( TARGETS eosio_chain

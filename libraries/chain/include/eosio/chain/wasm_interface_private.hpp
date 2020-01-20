@@ -3,10 +3,10 @@
 #include <eosio/chain/wasm_interface.hpp>
 #include <eosio/chain/webassembly/wavm.hpp>
 #include <eosio/chain/webassembly/wabt.hpp>
-#ifdef FOC_EOS_VM_OC_RUNTIME_ENABLED
+#ifdef FOC_VM_OC_RUNTIME_ENABLED
 #include <eosio/chain/webassembly/eos-vm-oc.hpp>
 #else
-#define _REGISTER_EOSVMOC_INTRINSIC(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)
+#define _REGISTER_FOCVMOC_INTRINSIC(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)
 #endif
 #include <eosio/chain/webassembly/eos-vm.hpp>
 #include <eosio/chain/webassembly/runtime_interface.hpp>
@@ -50,7 +50,7 @@ namespace eosio { namespace chain {
       struct by_first_block_num;
       struct by_last_block_num;
 
-#ifdef FOC_EOS_VM_OC_RUNTIME_ENABLED
+#ifdef FOC_VM_OC_RUNTIME_ENABLED
       struct eosvmoc_tier {
          eosvmoc_tier(const boost::filesystem::path& d, const eosvmoc::config& c, const chainbase::database& db) : cc(d, c, db), exec(cc) {}
          eosvmoc::code_cache_async cc;
@@ -70,16 +70,16 @@ namespace eosio { namespace chain {
          if(vm == wasm_interface::vm_type::eos_vm_jit)
             runtime_interface = std::make_unique<webassembly::eos_vm_runtime::eos_vm_runtime<eosio::vm::jit>>();
 #endif
-#ifdef FOC_EOS_VM_OC_RUNTIME_ENABLED
+#ifdef FOC_VM_OC_RUNTIME_ENABLED
          if(vm == wasm_interface::vm_type::eos_vm_oc)
             runtime_interface = std::make_unique<webassembly::eosvmoc::eosvmoc_runtime>(data_dir, eosvmoc_config, d);
 #endif
          if(!runtime_interface)
-            EOS_THROW(wasm_exception, "${r} wasm runtime not supported on this platform and/or configuration", ("r", vm));
+            FOC_THROW(wasm_exception, "${r} wasm runtime not supported on this platform and/or configuration", ("r", vm));
 
-#ifdef FOC_EOS_VM_OC_RUNTIME_ENABLED
+#ifdef FOC_VM_OC_RUNTIME_ENABLED
          if(eosvmoc_tierup) {
-            EOS_ASSERT(vm != wasm_interface::vm_type::eos_vm_oc, wasm_exception, "You can't use EOS VM OC as the base runtime when tier up is activated");
+            FOC_ASSERT(vm != wasm_interface::vm_type::eos_vm_oc, wasm_exception, "You can't use FOC VM OC as the base runtime when tier up is activated");
             eosvmoc.emplace(data_dir, eosvmoc_config, d);
          }
 #endif
@@ -97,8 +97,8 @@ namespace eosio { namespace chain {
          std::vector<uint8_t> mem_image;
 
          for(const DataSegment& data_segment : module.dataSegments) {
-            EOS_ASSERT(data_segment.baseOffset.type == InitializerExpression::Type::i32_const, wasm_exception, "");
-            EOS_ASSERT(module.memories.defs.size(), wasm_exception, "");
+            FOC_ASSERT(data_segment.baseOffset.type == InitializerExpression::Type::i32_const, wasm_exception, "");
+            FOC_ASSERT(module.memories.defs.size(), wasm_exception, "");
             const U32 base_offset = data_segment.baseOffset.i32;
             const Uptr memory_size = (module.memories.defs[0].type.size.min << IR::numBytesPerPageLog2);
             if(base_offset >= memory_size || base_offset + data_segment.data.size() > memory_size)
@@ -123,7 +123,7 @@ namespace eosio { namespace chain {
          //anything last used before or on the LIB can be evicted
          const auto first_it = wasm_instantiation_cache.get<by_last_block_num>().begin();
          const auto last_it  = wasm_instantiation_cache.get<by_last_block_num>().upper_bound(lib);
-#ifdef FOC_EOS_VM_OC_RUNTIME_ENABLED
+#ifdef FOC_VM_OC_RUNTIME_ENABLED
          if(eosvmoc) for(auto it = first_it; it != last_it; it++)
             eosvmoc->cc.free_code(it->code_hash, it->vm_version);
 #endif
@@ -167,9 +167,9 @@ namespace eosio { namespace chain {
                WASM::serialize(stream, module);
                module.userSections.clear();
             } catch (const Serialization::FatalSerializationException& e) {
-               EOS_ASSERT(false, wasm_serialization_error, e.message.c_str());
+               FOC_ASSERT(false, wasm_serialization_error, e.message.c_str());
             } catch (const IR::ValidationException& e) {
-               EOS_ASSERT(false, wasm_serialization_error, e.message.c_str());
+               FOC_ASSERT(false, wasm_serialization_error, e.message.c_str());
             }
             if (runtime_interface->inject_module(module)) {
                try {
@@ -177,10 +177,10 @@ namespace eosio { namespace chain {
                   WASM::serialize(outstream, module);
                   bytes = outstream.getBytes();
                } catch (const Serialization::FatalSerializationException& e) {
-                  EOS_ASSERT(false, wasm_serialization_error,
+                  FOC_ASSERT(false, wasm_serialization_error,
                              e.message.c_str());
                } catch (const IR::ValidationException& e) {
-                  EOS_ASSERT(false, wasm_serialization_error,
+                  FOC_ASSERT(false, wasm_serialization_error,
                              e.message.c_str());
                }
             }
@@ -214,7 +214,7 @@ namespace eosio { namespace chain {
       const chainbase::database& db;
       const wasm_interface::vm_type wasm_runtime_time;
 
-#ifdef FOC_EOS_VM_OC_RUNTIME_ENABLED
+#ifdef FOC_VM_OC_RUNTIME_ENABLED
       fc::optional<eosvmoc_tier> eosvmoc;
 #endif
    };
@@ -228,8 +228,8 @@ namespace eosio { namespace chain {
 #define _REGISTER_INTRINSIC_EXPLICIT(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)\
    _REGISTER_WAVM_INTRINSIC(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)         \
    _REGISTER_WABT_INTRINSIC(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)         \
-   _REGISTER_EOS_VM_INTRINSIC(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)       \
-   _REGISTER_EOSVMOC_INTRINSIC(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)
+   _REGISTER_FOC_VM_INTRINSIC(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)       \
+   _REGISTER_FOCVMOC_INTRINSIC(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)
 
 #define _REGISTER_INTRINSIC4(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)\
    _REGISTER_INTRINSIC_EXPLICIT(CLS, MOD, METHOD, WASM_SIG, NAME, SIG )

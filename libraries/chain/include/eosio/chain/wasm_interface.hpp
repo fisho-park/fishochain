@@ -46,7 +46,7 @@ namespace eosio { namespace chain {
             if( whitelisted_intrinsics != nullptr ) {
                // Protect access to "private" injected functions; so for now just simply allow "env" since injected
                // functions are in a different module.
-               EOS_ASSERT( mod_name == "env", wasm_exception,
+               FOC_ASSERT( mod_name == "env", wasm_exception,
                            "importing from module that is not 'env': ${module}.${export}",
                            ("module",mod_name)("export",export_name) );
 
@@ -59,7 +59,7 @@ namespace eosio { namespace chain {
                return true;
             }
 
-            EOS_THROW( wasm_exception, "${module}.${export} unresolveable",
+            FOC_THROW( wasm_exception, "${module}.${export} unresolveable",
                       ("module",mod_name)("export",export_name) );
             return false;
          } FC_CAPTURE_AND_RETHROW( (mod_name)(export_name) ) }
