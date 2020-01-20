@@ -436,16 +436,6 @@ Config Options for eosio::state_history_plugin:
 Command Line Options for eosio::state_history_plugin:
   --delete-state-history                clear state history files
 
-Config Options for eosio::txn_test_gen_plugin:
-  --txn-reference-block-lag arg (=0)    Lag in number of blocks from the head 
-                                        block when selecting the reference 
-                                        block for transactions (-1 means Last 
-                                        Irreversible Block)
-  --txn-test-gen-threads arg (=2)       Number of worker threads in 
-                                        txn_test_gen thread pool
-  --txn-test-gen-account-prefix arg (=txn.test.)
-                                        Prefix to use for accounts generated 
-                                        and used by this plugin
 ```
 
 For more information on each plugin-specific option, just visit the [Plugins](../03_plugins/index.md) section.
