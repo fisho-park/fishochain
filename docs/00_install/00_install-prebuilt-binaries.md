@@ -3,11 +3,11 @@ content_title: Install Prebuilt Binaries
 ---
 
 [[info | Previous Builds]]
-| If you have previously installed EOSIO from source using shell scripts, you must first run the [Uninstall Script](01_build-from-source/01_shell-scripts/05_uninstall-eosio.md) before installing any prebuilt binaries on the same OS.
+| If you have previously installed FOC from source using shell scripts, you must first run the [Uninstall Script](01_build-from-source/01_shell-scripts/05_uninstall-eosio.md) before installing any prebuilt binaries on the same OS.
 
 ## Prebuilt Binaries
 
-Prebuilt EOSIO software packages are available for the operating systems below. Find and follow the instructions for your OS:
+Prebuilt FOC software packages are available for the operating systems below. Find and follow the instructions for your OS:
 
 ### Mac OS X:
 
@@ -50,21 +50,21 @@ $ sudo yum install ./eosio-2.0.0-1.el7.x86_64.rpm
 $ sudo yum remove eosio
 ```
 
-## Location of EOSIO binaries
+## Location of FOC binaries
 
-After installing the prebuilt packages, the actual EOSIO binaries will be located under:
+After installing the prebuilt packages, the actual FOC binaries will be located under:
 * `/usr/opt/eosio/<version-string>/bin` (Linux-based); or
 * `/usr/local/Cellar/eosio/<version-string>/bin` (MacOS )
 
-where `version-string` is the EOSIO version that was installed; e.g. `2.0.0-rc2`.
+where `version-string` is the FOC version that was installed; e.g. `2.0.0-rc2`.
 
-Also, soft links for each EOSIO program (`nodeos`, `cleos`, `keosd`, etc.) will be created under `usr/bin` or `usr/local/bin` to allow them to be executed from any directory.
+Also, soft links for each FOC program (`nodeos`, `cleos`, `keosd`, etc.) will be created under `usr/bin` or `usr/local/bin` to allow them to be executed from any directory.
 
 ## Previous Versions
 
-To install previous versions of the EOSIO prebuilt binaries:
+To install previous versions of the FOC prebuilt binaries:
 
-1. Browse to https://github.com/EOSIO/eos/tags and select the actual version of the EOSIO software you need to install.
+1. Browse to https://github.com/FOC/eos/tags and select the actual version of the FOC software you need to install.
 
 2. Scroll down past the `Release Notes` and download the package or archive that you need for your OS.
 

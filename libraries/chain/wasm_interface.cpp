@@ -25,7 +25,7 @@
 #include <fstream>
 #include <string.h>
 
-#if defined(EOSIO_EOS_VM_RUNTIME_ENABLED) || defined(EOSIO_EOS_VM_JIT_RUNTIME_ENABLED)
+#if defined(FOC_EOS_VM_RUNTIME_ENABLED) || defined(FOC_EOS_VM_JIT_RUNTIME_ENABLED)
 #include <eosio/vm/allocator.hpp>
 #endif
 
@@ -74,7 +74,7 @@ namespace eosio { namespace chain {
    }
 
    void wasm_interface::apply( const digest_type& code_hash, const uint8_t& vm_type, const uint8_t& vm_version, apply_context& context ) {
-#ifdef EOSIO_EOS_VM_OC_RUNTIME_ENABLED
+#ifdef FOC_EOS_VM_OC_RUNTIME_ENABLED
       if(my->eosvmoc) {
          const chain::eosvmoc::code_descriptor* cd = nullptr;
          try {

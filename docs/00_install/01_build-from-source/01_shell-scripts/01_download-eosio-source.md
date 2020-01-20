@@ -1,12 +1,12 @@
 ---
-content_title: Download EOSIO Source
+content_title: Download FOC Source
 ---
 
-To download the EOSIO source code, clone the `eos` repo and its submodules. It is adviced to create a home `eosio` folder first and download all the EOSIO related software there:
+To download the FOC source code, clone the `eos` repo and its submodules. It is adviced to create a home `eosio` folder first and download all the FOC related software there:
 
 ```sh
 $ mkdir -p ~/eosio && cd ~/eosio
-$ git clone --recursive https://github.com/EOSIO/eos
+$ git clone --recursive https://github.com/FOC/eos
 ```
 
 ## Update Submodules
@@ -28,4 +28,4 @@ $ git pull --recurse-submodules
 ```
 
 [[info | What's Next?]]
-| [Build EOSIO binaries](02_build-eosio-binaries.md)
+| [Build FOC binaries](02_build-eosio-binaries.md)

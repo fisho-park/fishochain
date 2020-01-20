@@ -4,11 +4,11 @@ content_title: Cleos
 
 ## Introduction
 
-`cleos` is a command line tool that interfaces with the REST API exposed by `nodeos`. Developers can also use `cleos` to deploy and test EOSIO smart contracts.
+`cleos` is a command line tool that interfaces with the REST API exposed by `nodeos`. Developers can also use `cleos` to deploy and test FOC smart contracts.
 
 ## Installation
 
-`cleos` is distributed as part of the [EOSIO software suite](https://github.com/EOSIO/eos/blob/master/README.md). To install `cleos` just visit the [EOSIO Software Installation](../00_install/index.md) section.
+`cleos` is distributed as part of the [FOC software suite](https://github.com/FOC/eos/blob/master/README.md). To install `cleos` just visit the [FOC Software Installation](../00_install/index.md) section.
 
 ## Using Cleos
 
@@ -23,7 +23,7 @@ $ cleos --help
 ```
 
 ```console
-Command Line Interface to EOSIO Client
+Command Line Interface to FOC Client
 Usage: cleos [OPTIONS] SUBCOMMAND
 
 Options:

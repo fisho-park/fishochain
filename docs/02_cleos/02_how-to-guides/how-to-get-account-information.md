@@ -1,6 +1,6 @@
 ## Goal
 
-Query infomation of an EOSIO account
+Query infomation of an FOC account
 
 ## Before you begin
 
@@ -40,4 +40,4 @@ cpu bandwidth:
 ```
 
 [[info]]
-| Depends on the EOSIO network you are connected, you might see different fields associated with an account. That depends on which system contract has been deployed tp the network.
+| Depends on the FOC network you are connected, you might see different fields associated with an account. That depends on which system contract has been deployed tp the network.

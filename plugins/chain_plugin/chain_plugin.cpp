@@ -199,7 +199,7 @@ void chain_plugin::set_program_options(options_description& cli, options_descrip
           "the location of the protocol_features directory (absolute path or relative to application config dir)")
          ("checkpoint", bpo::value<vector<string>>()->composing(), "Pairs of [BLOCK_NUM,BLOCK_ID] that should be enforced as checkpoints.")
          ("wasm-runtime", bpo::value<eosio::chain::wasm_interface::vm_type>()->value_name("runtime")->notifier([](const auto& vm){
-#ifndef EOSIO_EOS_VM_OC_DEVELOPER
+#ifndef FOC_EOS_VM_OC_DEVELOPER
             //throwing an exception here (like EOS_ASSERT) is just gobbled up with a "Failed to initialize" error :(
             if(vm == wasm_interface::vm_type::eos_vm_oc) {
                elog("EOS VM OC is a tier-up compiler and works in conjunction with the configured base WASM runtime. Enable EOS VM OC via 'eos-vm-oc-enable' option");
@@ -263,7 +263,7 @@ void chain_plugin::set_program_options(options_description& cli, options_descrip
          ("database-hugepage-path", bpo::value<vector<string>>()->composing(), "Optional path for database hugepages when in \"locked\" mode (may specify multiple times)")
 #endif
 
-#ifdef EOSIO_EOS_VM_OC_RUNTIME_ENABLED
+#ifdef FOC_EOS_VM_OC_RUNTIME_ENABLED
          ("eos-vm-oc-cache-size-mb", bpo::value<uint64_t>()->default_value(eosvmoc::config().cache_size / (1024u*1024u)), "Maximum size (in MiB) of the EOS VM OC code cache")
          ("eos-vm-oc-compile-threads", bpo::value<uint64_t>()->default_value(1u)->notifier([](const auto t) {
                if(t == 0) {
@@ -591,9 +591,9 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
 
    try {
       try {
-         genesis_state gs; // Check if EOSIO_ROOT_KEY is bad
+         genesis_state gs; // Check if FOC_ROOT_KEY is bad
       } catch ( const fc::exception& ) {
-         elog( "EOSIO_ROOT_KEY ('${root_key}') is invalid. Recompile with a valid public key.",
+         elog( "FOC_ROOT_KEY ('${root_key}') is invalid. Recompile with a valid public key.",
                ("root_key", genesis_state::eosio_root_key));
          throw;
       }
@@ -1002,7 +1002,7 @@ void chain_plugin::plugin_initialize(const variables_map& options) {
          my->chain_config->db_hugepage_paths = options.at("database-hugepage-path").as<std::vector<std::string>>();
 #endif
 
-#ifdef EOSIO_EOS_VM_OC_RUNTIME_ENABLED
+#ifdef FOC_EOS_VM_OC_RUNTIME_ENABLED
       if( options.count("eos-vm-oc-cache-size-mb") )
          my->chain_config->eosvmoc_config.cache_size = options.at( "eos-vm-oc-cache-size-mb" ).as<uint64_t>() * 1024u * 1024u;
       if( options.count("eos-vm-oc-compile-threads") )

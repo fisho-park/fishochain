@@ -1,8 +1,8 @@
 ---
-content_title: Test EOSIO Binaries
+content_title: Test FOC Binaries
 ---
 
-Optionally, a set of tests can be run against your build to perform some basic validation of the EOSIO software installation.
+Optionally, a set of tests can be run against your build to perform some basic validation of the FOC software installation.
 
 To run the test suite after building, start `mongod`:
 
@@ -16,9 +16,9 @@ On MacOS:
 /usr/local/bin/mongod -f /usr/local/etc/mongod.conf &
 ```
 
-then set the build path to EOSIO_HOME:
+then set the build path to FOC_HOME:
 ```sh
-export EOSIO_HOME=~/eosio/eos/build
+export FOC_HOME=~/eosio/eos/build
 ```
 
 then run `make test` on all platforms:

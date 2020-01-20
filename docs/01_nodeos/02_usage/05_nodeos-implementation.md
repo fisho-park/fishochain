@@ -2,7 +2,7 @@
 content_title: Nodeos Implementation
 ---
 
-The EOSIO platform stores blockchain information in various data structures at various stages of a transaction's lifecycle. Some of these are described below. The producing node is the `nodeos` instance run by the block producer who is currently creating blocks for the blockchain (which changes every 6 seconds, producing 12 blocks in sequence before switching to another producer.)
+The FOC platform stores blockchain information in various data structures at various stages of a transaction's lifecycle. Some of these are described below. The producing node is the `nodeos` instance run by the block producer who is currently creating blocks for the blockchain (which changes every 6 seconds, producing 12 blocks in sequence before switching to another producer.)
 
 ## Blockchain State and Storage
 
@@ -16,7 +16,7 @@ Every `nodeos` instance creates some internal files to housekeep the blockchain 
 
 ## Nodeos Read Modes
 
-EOSIO provides a set of [services and interfaces](https://developers.eos.io/eosio-cpp/docs/db-api) that enable contract developers to persist state across action, and consequently transaction, boundaries. Contracts may use these services and interfaces for different purposes. For example, `eosio.token` contract keeps balances for all users in the database.
+FOC provides a set of [services and interfaces](https://developers.eos.io/eosio-cpp/docs/db-api) that enable contract developers to persist state across action, and consequently transaction, boundaries. Contracts may use these services and interfaces for different purposes. For example, `eosio.token` contract keeps balances for all users in the database.
 
 Each instance of `nodeos` keeps the database in memory, so contracts can read and write data.   `nodeos` also provides access to this data over HTTP RPC API for reading the database.
 

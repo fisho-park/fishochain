@@ -10,7 +10,7 @@ The optional `eosio::mongo_db_plugin` provides archiving of blockchain data into
 ## Important Notes
 
 * Documents stored in mongo by `mongo_db_plugin` which contain empty field/struct names will be stored with the field/struct name of `empty_field_name` / `empty_struct_name`.
-* Action data is stored on chain as raw bytes. This plugin attempts to use associated ABI on accounts to deserialize the raw bytes into expanded `abi_def` form for storage into mongo. Note that invalid or missing ABI on a contract will result in the action data being stored as raw bytes. For example the EOSIO system contract does not provide ABI for the `onblock` action so it is stored as raw bytes.
+* Action data is stored on chain as raw bytes. This plugin attempts to use associated ABI on accounts to deserialize the raw bytes into expanded `abi_def` form for storage into mongo. Note that invalid or missing ABI on a contract will result in the action data being stored as raw bytes. For example the FOC system contract does not provide ABI for the `onblock` action so it is stored as raw bytes.
 * The `mongo_db_plugin` does slow down replay/resync as the conversion of block data to JSON and insertion into MongoDB is resource intensive. The plugin does use a worker thread for processing the block data, but this does not help much when replaying/resyncing.
 
 ## Recommendations

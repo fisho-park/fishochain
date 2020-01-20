@@ -1,6 +1,6 @@
 [submodule "libraries/chainbase"]
 	path = libraries/chainbase
-	url = https://github.com/eosio/chainbase
+url=https://git.lothlorien.cn/FishoPark/chainbase.git
         ignore = dirty
 [submodule "libraries/appbase"]
 	path = libraries/appbase
@@ -11,10 +11,10 @@
 	url = https://github.com/eosio/berkeley-softfloat-3
 [submodule "libraries/fc"]
 	path = libraries/fc
-	url = https://github.com/EOSIO/fc
+	url = https://github.com/FOC/fc
 [submodule "libraries/wabt"]
 	path = libraries/wabt
-	url = https://github.com/EOSIO/wabt
+	url = https://github.com/FOC/wabt
 [submodule "libraries/yubihsm"]
 	path = libraries/yubihsm
 	url = https://github.com/Yubico/yubihsm-shell
@@ -23,4 +23,4 @@
 	url = https://github.com/eosio/eos-vm
 [submodule "eosio-wasm-spec-tests"]
 	path = eosio-wasm-spec-tests
-	url = https://github.com/EOSIO/eosio-wasm-spec-tests
+	url = https://github.com/FOC/eosio-wasm-spec-tests

@@ -3,7 +3,7 @@
 #include <eosio/chain/wasm_interface.hpp>
 #include <eosio/chain/webassembly/wavm.hpp>
 #include <eosio/chain/webassembly/wabt.hpp>
-#ifdef EOSIO_EOS_VM_OC_RUNTIME_ENABLED
+#ifdef FOC_EOS_VM_OC_RUNTIME_ENABLED
 #include <eosio/chain/webassembly/eos-vm-oc.hpp>
 #else
 #define _REGISTER_EOSVMOC_INTRINSIC(CLS, MOD, METHOD, WASM_SIG, NAME, SIG)
@@ -22,7 +22,7 @@
 #include "WAST/WAST.h"
 #include "IR/Validate.h"
 
-#if defined(EOSIO_EOS_VM_RUNTIME_ENABLED) || defined(EOSIO_EOS_VM_JIT_RUNTIME_ENABLED)
+#if defined(FOC_EOS_VM_RUNTIME_ENABLED) || defined(FOC_EOS_VM_JIT_RUNTIME_ENABLED)
 #include <eosio/vm/allocator.hpp>
 #endif
 
@@ -50,7 +50,7 @@ namespace eosio { namespace chain {
       struct by_first_block_num;
       struct by_last_block_num;
 
-#ifdef EOSIO_EOS_VM_OC_RUNTIME_ENABLED
+#ifdef FOC_EOS_VM_OC_RUNTIME_ENABLED
       struct eosvmoc_tier {
          eosvmoc_tier(const boost::filesystem::path& d, const eosvmoc::config& c, const chainbase::database& db) : cc(d, c, db), exec(cc) {}
          eosvmoc::code_cache_async cc;
@@ -62,22 +62,22 @@ namespace eosio { namespace chain {
       wasm_interface_impl(wasm_interface::vm_type vm, bool eosvmoc_tierup, const chainbase::database& d, const boost::filesystem::path data_dir, const eosvmoc::config& eosvmoc_config) : db(d), wasm_runtime_time(vm) {
          if(vm == wasm_interface::vm_type::wabt)
             runtime_interface = std::make_unique<webassembly::wabt_runtime::wabt_runtime>();
-#ifdef EOSIO_EOS_VM_RUNTIME_ENABLED
+#ifdef FOC_EOS_VM_RUNTIME_ENABLED
          if(vm == wasm_interface::vm_type::eos_vm)
             runtime_interface = std::make_unique<webassembly::eos_vm_runtime::eos_vm_runtime<eosio::vm::interpreter>>();
 #endif
-#ifdef EOSIO_EOS_VM_JIT_RUNTIME_ENABLED
+#ifdef FOC_EOS_VM_JIT_RUNTIME_ENABLED
          if(vm == wasm_interface::vm_type::eos_vm_jit)
             runtime_interface = std::make_unique<webassembly::eos_vm_runtime::eos_vm_runtime<eosio::vm::jit>>();
 #endif
-#ifdef EOSIO_EOS_VM_OC_RUNTIME_ENABLED
+#ifdef FOC_EOS_VM_OC_RUNTIME_ENABLED
          if(vm == wasm_interface::vm_type::eos_vm_oc)
             runtime_interface = std::make_unique<webassembly::eosvmoc::eosvmoc_runtime>(data_dir, eosvmoc_config, d);
 #endif
          if(!runtime_interface)
             EOS_THROW(wasm_exception, "${r} wasm runtime not supported on this platform and/or configuration", ("r", vm));
 
-#ifdef EOSIO_EOS_VM_OC_RUNTIME_ENABLED
+#ifdef FOC_EOS_VM_OC_RUNTIME_ENABLED
          if(eosvmoc_tierup) {
             EOS_ASSERT(vm != wasm_interface::vm_type::eos_vm_oc, wasm_exception, "You can't use EOS VM OC as the base runtime when tier up is activated");
             eosvmoc.emplace(data_dir, eosvmoc_config, d);
@@ -123,7 +123,7 @@ namespace eosio { namespace chain {
          //anything last used before or on the LIB can be evicted
          const auto first_it = wasm_instantiation_cache.get<by_last_block_num>().begin();
          const auto last_it  = wasm_instantiation_cache.get<by_last_block_num>().upper_bound(lib);
-#ifdef EOSIO_EOS_VM_OC_RUNTIME_ENABLED
+#ifdef FOC_EOS_VM_OC_RUNTIME_ENABLED
          if(eosvmoc) for(auto it = first_it; it != last_it; it++)
             eosvmoc->cc.free_code(it->code_hash, it->vm_version);
 #endif
@@ -214,7 +214,7 @@ namespace eosio { namespace chain {
       const chainbase::database& db;
       const wasm_interface::vm_type wasm_runtime_time;
 
-#ifdef EOSIO_EOS_VM_OC_RUNTIME_ENABLED
+#ifdef FOC_EOS_VM_OC_RUNTIME_ENABLED
       fc::optional<eosvmoc_tier> eosvmoc;
 #endif
    };
@@ -258,7 +258,7 @@ namespace eosio { namespace chain {
    BOOST_PP_SEQ_FOR_EACH(_REGISTER_INTRINSIC, CLS, _WRAPPED_SEQ(MEMBERS))
 
 #define _REGISTER_INJECTED_INTRINSIC(R, CLS, INFO)\
-   BOOST_PP_CAT(BOOST_PP_OVERLOAD(_REGISTER_INTRINSIC, _UNWRAP_SEQ INFO) _EXPAND_ARGS(CLS, EOSIO_INJECTED_MODULE_NAME, INFO), BOOST_PP_EMPTY())
+   BOOST_PP_CAT(BOOST_PP_OVERLOAD(_REGISTER_INTRINSIC, _UNWRAP_SEQ INFO) _EXPAND_ARGS(CLS, FOC_INJECTED_MODULE_NAME, INFO), BOOST_PP_EMPTY())
 
 #define REGISTER_INJECTED_INTRINSICS(CLS, MEMBERS)\
    BOOST_PP_SEQ_FOR_EACH(_REGISTER_INJECTED_INTRINSIC, CLS, _WRAPPED_SEQ(MEMBERS))

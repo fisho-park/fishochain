@@ -1,6 +1,6 @@
 ## Goal
 
-Deploy an EOSIO contract
+Deploy an FOC contract
 
 ## Before you begin
 

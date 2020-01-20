@@ -3,7 +3,7 @@
 #include <eosio/chain/types.hpp>
 #include <eosio/chain/whitelisted_intrinsics.hpp>
 #include <eosio/chain/exceptions.hpp>
-#if defined(EOSIO_EOS_VM_RUNTIME_ENABLED) || defined(EOSIO_EOS_VM_JIT_RUNTIME_ENABLED)
+#if defined(FOC_EOS_VM_RUNTIME_ENABLED) || defined(FOC_EOS_VM_JIT_RUNTIME_ENABLED)
 #include <eosio/vm/allocator.hpp>
 #endif
 #include "Runtime/Linker.h"
@@ -88,7 +88,7 @@ namespace eosio { namespace chain {
          //call before dtor to skip what can be minutes of dtor overhead with some runtimes; can cause leaks
          void indicate_shutting_down();
 
-         //validates code -- does a WASM validation pass and checks the wasm against EOSIO specific constraints
+         //validates code -- does a WASM validation pass and checks the wasm against FOC specific constraints
          static void validate(const controller& control, const bytes& code);
 
          //indicate that a particular code probably won't be used after given block_num

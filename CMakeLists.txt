@@ -1,6 +1,6 @@
 cmake_minimum_required( VERSION 3.8 )
 
-project( EOSIO )
+project( FOC )
 include(CTest) # suppresses DartConfiguration.tcl error
 enable_testing()
 
@@ -18,7 +18,7 @@ include( GNUInstallDirs )
 include( InstallDirectoryPermissions )
 include( MASSigning )
 
-set( BLOCKCHAIN_NAME "EOSIO" )
+set( BLOCKCHAIN_NAME "FOC" )
 set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_EXTENSIONS ON )
 set( CXX_STANDARD_REQUIRED ON)
@@ -64,25 +64,25 @@ if(APPLE AND UNIX AND "${OPENSSL_ROOT_DIR}" STREQUAL "")
 endif()
 
 # WASM runtimes to enable. Each runtime in this list will have:
-#  * definition EOSIO_<RUNTIME>_RUNTIME_ENABLED defined in public libchain interface
+#  * definition FOC_<RUNTIME>_RUNTIME_ENABLED defined in public libchain interface
 #  * ctest entries with --runtime
-list(APPEND EOSIO_WASM_RUNTIMES wabt)   #always enable wabt; it works everywhere and parts of eosio still assume it's always available
+list(APPEND FOC_WASM_RUNTIMES wabt)   #always enable wabt; it works everywhere and parts of eosio still assume it's always available
 if(CMAKE_SIZEOF_VOID_P EQUAL 8 AND NOT WIN32)
    if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux" AND "${CMAKE_SYSTEM_PROCESSOR}" STREQUAL "x86_64")
-      list(APPEND EOSIO_WASM_RUNTIMES eos-vm-oc)
+      list(APPEND FOC_WASM_RUNTIMES eos-vm-oc)
       # EOS VM OC requires LLVM, but move the check up here to a central location so that the EosioTester.cmakes
       # can be created with the exact version found
       find_package(LLVM REQUIRED CONFIG)
       if(LLVM_VERSION_MAJOR VERSION_LESS 7 OR LLVM_VERSION_MAJOR VERSION_GREATER 9)
-	      message(FATAL_ERROR "EOSIO requires an LLVM version 7.0 to 9.0")
+	      message(FATAL_ERROR "FOC requires an LLVM version 7.0 to 9.0")
       endif()
    endif()
 endif()
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8 AND NOT WIN32)
-   list(APPEND EOSIO_WASM_RUNTIMES eos-vm)
+   list(APPEND FOC_WASM_RUNTIMES eos-vm)
    if(CMAKE_SYSTEM_PROCESSOR STREQUAL x86_64)
-      list(APPEND EOSIO_WASM_RUNTIMES eos-vm-jit)
+      list(APPEND FOC_WASM_RUNTIMES eos-vm-jit)
    endif()
 endif()
 
@@ -106,11 +106,11 @@ find_package(Boost 1.67 REQUIRED COMPONENTS program_options unit_test_framework)
 
 if( APPLE AND UNIX )
 # Apple Specific Options Here
-    message( STATUS "Configuring EOSIO on macOS" )
+    message( STATUS "Configuring FOC on macOS" )
     set( CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} ${CMAKE_CXX_FLAGS} -Wall -Wno-deprecated-declarations" )
 else()
     # Linux Specific Options Here
-    message( STATUS "Configuring EOSIO on Linux" )
+    message( STATUS "Configuring FOC on Linux" )
     set( CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} ${CMAKE_CXX_FLAGS} -Wall" )
     if ( FULL_STATIC_BUILD )
       set( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static-libstdc++ -static-libgcc")
@@ -127,7 +127,7 @@ endif()
 # uncomment this line to tell GDB about macros (slows compile times)
 # set( CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -gdwarf-2 -g3" )
 
-set(ENABLE_COVERAGE_TESTING FALSE CACHE BOOL "Build EOSIO for code coverage analysis")
+set(ENABLE_COVERAGE_TESTING FALSE CACHE BOOL "Build FOC for code coverage analysis")
 
 if(ENABLE_COVERAGE_TESTING)
   SET(CMAKE_CXX_FLAGS "--coverage ${CMAKE_CXX_FLAGS}")
@@ -150,11 +150,11 @@ endif()
 
 message( STATUS "Using '${CORE_SYMBOL_NAME}' as CORE symbol name" )
 
-if ("${EOSIO_ROOT_KEY}" STREQUAL "")
-   set(EOSIO_ROOT_KEY "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV")
+if ("${FOC_ROOT_KEY}" STREQUAL "")
+   set(FOC_ROOT_KEY "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV")
 endif()
 
-message( STATUS "Using '${EOSIO_ROOT_KEY}' as public key for 'eosio' account" )
+message( STATUS "Using '${FOC_ROOT_KEY}' as public key for 'eosio' account" )
 
 add_subdirectory( libraries )
 add_subdirectory( plugins )

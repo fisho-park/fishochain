@@ -244,7 +244,7 @@ struct controller_impl {
    uint32_t                       snapshot_head_block = 0;
    named_thread_pool              thread_pool;
    platform_timer                 timer;
-#if defined(EOSIO_EOS_VM_RUNTIME_ENABLED) || defined(EOSIO_EOS_VM_JIT_RUNTIME_ENABLED)
+#if defined(FOC_EOS_VM_RUNTIME_ENABLED) || defined(FOC_EOS_VM_JIT_RUNTIME_ENABLED)
    vm::wasm_allocator                 wasm_alloc;
 #endif
 
@@ -1001,7 +1001,7 @@ struct controller_impl {
          a.creation_date = initial_timestamp;
 
          if( name == config::system_account_name ) {
-            // The initial eosio ABI value affects consensus; see  https://github.com/EOSIO/eos/issues/7794
+            // The initial eosio ABI value affects consensus; see  https://github.com/FOC/eos/issues/7794
             // TODO: This doesn't charge RAM; a fix requires a consensus upgrade.
             a.abi.resize(sizeof(eosio_abi_bin));
             memcpy(a.abi.data(), eosio_abi_bin, sizeof(eosio_abi_bin));
@@ -3195,7 +3195,7 @@ bool controller::all_subjective_mitigations_disabled()const {
    return my->conf.disable_all_subjective_mitigations;
 }
 
-#if defined(EOSIO_EOS_VM_RUNTIME_ENABLED) || defined(EOSIO_EOS_VM_JIT_RUNTIME_ENABLED)
+#if defined(FOC_EOS_VM_RUNTIME_ENABLED) || defined(FOC_EOS_VM_JIT_RUNTIME_ENABLED)
 vm::wasm_allocator& controller::get_wasm_allocator() {
    return my->wasm_alloc;
 }
