@@ -103,7 +103,7 @@ function install-directory-prompt() {
 
 function previous-install-prompt() {
   if [[ -d $FOC_INSTALL_DIR ]]; then
-    echo "FOC has already been installed into ${FOC_INSTALL_DIR}... It's suggested that you eosio_uninstall.sh before re-running this script."
+    echo "FOC has already been installed into ${FOC_INSTALL_DIR}... It's suggested that you foc_uninstall.sh before re-running this script."
     while true; do
       [[ $NONINTERACTIVE == false ]] && printf "${COLOR_YELLOW}Do you wish to proceed anyway? (y/n)${COLOR_NC}" && read -p " " PROCEED
       echo ""

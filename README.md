@@ -62,7 +62,7 @@ Prebuilt FOC software packages are available for the operating systems below. Fi
 
 #### Mac OS X Brew Install
 ```sh
-$ brew tap eosio/eosio
+$ brew tap fisho/foc
 $ brew install eosio
 ```
 #### Mac OS X Brew Uninstall
@@ -102,17 +102,17 @@ $ sudo yum remove eosio
 ## Uninstall Script
 To uninstall the FOC built/installed binaries and dependencies, run:
 ```sh
-./scripts/eosio_uninstall.sh
+./scripts/foc_uninstall.sh
 ```
 
 ## Documentation 
-1. [Nodeos](http://eosio.github.io/eos/nodeos/)
-    - [Usage](http://eosio.github.io/eos/nodeos/usage/index)
-    - [Replays](http://eosio.github.io/eos/nodeos/replays/index)
-    - [Chain API Reference](http://eosio.github.io/eos/nodeos/plugins/chain_api_plugin/api-reference/index)
-    - [Troubleshooting](http://eosio.github.io/eos/nodeos/troubleshooting/index)
-1. [Cleos](http://eosio.github.io/eos/cleos/)
-1. [Keosd](http://eosio.github.io/eos/keosd/)
+1. [Nodeos](http://eosio.github.io/eos/nodefoc/)
+    - [Usage](http://eosio.github.io/eos/nodefoc/usage/index)
+    - [Replays](http://eosio.github.io/eos/nodefoc/replays/index)
+    - [Chain API Reference](http://eosio.github.io/eos/nodefoc/plugins/chain_api_plugin/api-reference/index)
+    - [Troubleshooting](http://eosio.github.io/eos/nodefoc/troubleshooting/index)
+1. [Cleos](http://eosio.github.io/eos/clfoc/)
+1. [Keosd](http://eosio.github.io/eos/kfocd/)
 
 ## Resources
 1. [Website](https://eos.io)

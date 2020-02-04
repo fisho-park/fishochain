@@ -49,7 +49,7 @@ if("eos-vm" IN_LIST FOC_WASM_RUNTIMES OR "eos-vm-jit" IN_LIST FOC_WASM_RUNTIMES)
 endif()
 
 ## SORT .cpp by most likely to change / break compile
-add_library( eosio_chain
+add_library( foc_chain
              merkle.cpp
              name.cpp
              transaction.cpp
@@ -104,10 +104,10 @@ add_library( eosio_chain
              ${HEADERS}
              )
 
-target_link_libraries( eosio_chain fc chainbase Logging IR WAST WASM Runtime
+target_link_libraries( foc_chain fc chainbase Logging IR WAST WASM Runtime
                        softfloat builtins wabt ${CHAIN_FOCVM_LIBRARIES} ${LLVM_LIBS}
                      )
-target_include_directories( eosio_chain
+target_include_directories( foc_chain
                             PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include" "${CMAKE_CURRENT_BINARY_DIR}/include"
                                    "${CMAKE_CURRENT_SOURCE_DIR}/../wasm-jit/Include"
                                    "${CMAKE_CURRENT_SOURCE_DIR}/libraries/eos-vm/include"
@@ -116,21 +116,21 @@ target_include_directories( eosio_chain
                             )
 
 if("eos-vm-oc" IN_LIST FOC_WASM_RUNTIMES)
-   target_link_libraries(eosio_chain "-Wl,-wrap=main")
+   target_link_libraries(foc_chain "-Wl,-wrap=main")
 endif()
 
 foreach(RUNTIME ${FOC_WASM_RUNTIMES})
    string(TOUPPER "${RUNTIME}" RUNTIMEUC)
    string(REPLACE "-" "_" RUNTIMEUC ${RUNTIMEUC})
-   target_compile_definitions(eosio_chain PUBLIC "FOC_${RUNTIMEUC}_RUNTIME_ENABLED")
+   target_compile_definitions(foc_chain PUBLIC "FOC_${RUNTIMEUC}_RUNTIME_ENABLED")
 endforeach()
 
 if(FOCVMOC_ENABLE_DEVELOPER_OPTIONS)
    message(WARNING "FOC VM OC Developer Options are enabled; these are NOT supported")
-   target_compile_definitions(eosio_chain PUBLIC FOC_VM_OC_DEVELOPER)
+   target_compile_definitions(foc_chain PUBLIC FOC_VM_OC_DEVELOPER)
 endif()
 
-install( TARGETS eosio_chain
+install( TARGETS foc_chain
    RUNTIME DESTINATION ${CMAKE_INSTALL_FULL_BINDIR}
    LIBRARY DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}
    ARCHIVE DESTINATION ${CMAKE_INSTALL_FULL_LIBDIR}

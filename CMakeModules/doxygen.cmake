@@ -1,4 +1,4 @@
-configure_file("eos.doxygen.in" "${CMAKE_BINARY_DIR}/eos.doxygen")
+configure_file("foc.doxygen.in" "${CMAKE_BINARY_DIR}/eos.doxygen")
 
 include(FindDoxygen)
 

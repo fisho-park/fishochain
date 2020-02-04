@@ -67,7 +67,7 @@ The command line to launch the script, make sure you replace `FOC_OLD_CONTRACTS_
 $ cd ~
 $ git clone https://github.com/FOC/eos.git
 $ cd ./eos/tutorials/bios-boot-tutorial/
-$ python3 bios-boot-tutorial.py --cleos="cleos --wallet-url http://127.0.0.1:6666 " --nodeos=nodeos --keosd=keosd --contracts-dir="FOC_CONTRACTS_DIRECTORY" --old-contracts-dir="FOC_OLD_CONTRACTS_DIRECTORY" -w -a
+$ python3 bios-boot-tutorial.py --clfoc="clfoc --wallet-url http://127.0.0.1:6666 " --nodefoc=nodefoc --kfocd=kfocd --contracts-dir="FOC_CONTRACTS_DIRECTORY" --old-contracts-dir="FOC_OLD_CONTRACTS_DIRECTORY" -w -a
 ```
 
 6. At this point, when the script has finished running without error, you have a functional FOC based blockchain running locally with an latest version of `eosio.system` contract, 31 block producers out of which 21 active, `eosio` account resigned, 200k+ accounts with staked tokens, and votes allocated to each block producer. Enjoy exploring your freshly booted blockchain.
