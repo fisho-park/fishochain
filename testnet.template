@@ -104,27 +104,27 @@ pubsyskey=`grep "^Public key:" $logfile | tail -1 | sed "s/^Public key://"`
 prisyskey=`grep "^Private key:" $logfile | tail -1 | sed "s/^Private key://"`
 echo eosio.* keys: $prisyskey $pubsyskey >> $logfile
 wcmd import -n ignition --private-key $prisyskey
-ecmd create account eosio eosio.bpay $pubsyskey $pubsyskey
-ecmd create account eosio eosio.msig $pubsyskey $pubsyskey
-ecmd create account eosio eosio.names $pubsyskey $pubsyskey
-ecmd create account eosio eosio.ram $pubsyskey $pubsyskey
-ecmd create account eosio eosio.ramfee $pubsyskey $pubsyskey
-ecmd create account eosio eosio.saving $pubsyskey $pubsyskey
-ecmd create account eosio eosio.stake $pubsyskey $pubsyskey
-ecmd create account eosio eosio.token $pubsyskey $pubsyskey
-ecmd create account eosio eosio.vpay $pubsyskey $pubsyskey
+ecmd create account eosio foc.bpay $pubsyskey $pubsyskey
+ecmd create account eosio foc.msig $pubsyskey $pubsyskey
+ecmd create account eosio foc.names $pubsyskey $pubsyskey
+ecmd create account eosio foc.ram $pubsyskey $pubsyskey
+ecmd create account eosio foc.ramfee $pubsyskey $pubsyskey
+ecmd create account eosio foc.saving $pubsyskey $pubsyskey
+ecmd create account eosio foc.stake $pubsyskey $pubsyskey
+ecmd create account eosio foc.token $pubsyskey $pubsyskey
+ecmd create account eosio foc.vpay $pubsyskey $pubsyskey
 ecmd create account eosio eosio.wrap $pubsyskey $pubsyskey
 
-ecmd set contract eosio.token unittests/contracts/eosio.token eosio.token.wasm eosio.token.abi
-ecmd set contract eosio.msig unittests/contracts/eosio.msig eosio.msig.wasm eosio.msig.abi
+ecmd set contract foc.token unittests/contracts/foc.token foc.token.wasm foc.token.abi
+ecmd set contract foc.msig unittests/contracts/foc.msig foc.msig.wasm foc.msig.abi
 ecmd set contract eosio.wrap unittests/contracts/eosio.wrap eosio.wrap.wasm eosio.wrap.abi
 
 echo ===== Start: $step ============ >> $logfile
-echo executing: clfoc --wallet-url $wdurl --url http://$bioshost:$biosport push action eosio.token create '[ "eosio", "10000000000.0000 '$bioscurrencysymbol'" ]' -p eosio.token | tee -a $logfile
-echo executing: clfoc --wallet-url $wdurl --url http://$bioshost:$biosport push action eosio.token issue '[ "eosio", "1000000000.0000 '$bioscurrencysymbol'", "memo" ]' -p eosio | tee -a $logfile
+echo executing: clfoc --wallet-url $wdurl --url http://$bioshost:$biosport push action foc.token create '[ "eosio", "10000000000.0000 '$bioscurrencysymbol'" ]' -p foc.token | tee -a $logfile
+echo executing: clfoc --wallet-url $wdurl --url http://$bioshost:$biosport push action foc.token issue '[ "eosio", "1000000000.0000 '$bioscurrencysymbol'", "memo" ]' -p eosio | tee -a $logfile
 echo ----------------------- >> $logfile
-programs/clfoc/clfoc --wallet-url $wdurl --url http://$bioshost:$biosport push action eosio.token create '[ "eosio", "10000000000.0000 '$bioscurrencysymbol'" ]' -p eosio.token >> $logfile 2>&1
-programs/clfoc/clfoc --wallet-url $wdurl --url http://$bioshost:$biosport push action eosio.token issue '[ "eosio", "1000000000.0000 '$bioscurrencysymbol'", "memo" ]' -p eosio >> $logfile 2>&1
+programs/clfoc/clfoc --wallet-url $wdurl --url http://$bioshost:$biosport push action foc.token create '[ "eosio", "10000000000.0000 '$bioscurrencysymbol'" ]' -p foc.token >> $logfile 2>&1
+programs/clfoc/clfoc --wallet-url $wdurl --url http://$bioshost:$biosport push action foc.token issue '[ "eosio", "1000000000.0000 '$bioscurrencysymbol'", "memo" ]' -p eosio >> $logfile 2>&1
 echo ==== End: $step ============== >> $logfile
 step=$(($step + 1))
 

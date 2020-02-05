@@ -19,16 +19,16 @@ The `bios-boot-tutorial.py` script simulates the FOC bios boot sequence.
 ``Steps``:
 
 1. Install eosio binaries by following the steps outlined in below tutorial
-[Install eosio binaries](https://github.com/FOC/eos/tree/release/2.0.x#mac-os-x-brew-install).
+[Install eosio binaries](https://github.com/eosio/fishochain/tree/release/2.0.x#mac-os-x-brew-install).
 
 2. Install eosio.cdt version 1.6.3 binaries by following the steps outlined in below tutorial
-[Install eosio.cdt binaries](https://github.com/FOC/eosio.cdt/tree/release/1.6.x#binary-releases).
+[Install eosio.cdt binaries](https://github.com/eosio/eosio.cdt/tree/release/1.6.x#binary-releases).
 
-3. Compile `eosio.contracts` version 1.8.x.
+3. Compile `foc.contracts` version 1.8.x.
 
 ```bash
 $ cd ~
-$ git clone https://github.com/FOC/eosio.contracts.git eosio.contracts-1.8.x
+$ git clone https://github.com/fisho-park/eosio.contracts.git eosio.contracts-1.8.x
 $ cd ./eosio.contracts-1.8.x/
 $ git checkout release/1.8.x
 $ ./build.sh
@@ -41,14 +41,14 @@ $ pwd
 The last command in the previous step printed on the bash console the contracts' directory, make note of it, we'll reference it from now on as `FOC_OLD_CONTRACTS_DIRECTORY`.
 
 5. Install eosio.cdt version 1.7.0 binaries by following the steps outlined in below tutorial, make sure you uninstall the previous one first.
-[Install eosio.cdt binaries](https://github.com/FOC/eosio.cdt/tree/release/1.7.x#binary-releases)
+[Install eosio.cdt binaries](https://github.com/eosio/eosio.cdt/tree/release/1.7.x#binary-releases)
 
-6. Compile `eosio.contracts` sources version 1.9.0
+6. Compile `foc.contracts` sources version 1.9.0
 
 ```bash
 $ cd ~
-$ git clone https://github.com/FOC/eosio.contracts.git
-$ cd ./eosio.contracts/
+$ git clone https://github.com/fisho-park/foc.contracts.git
+$ cd ./foc.contracts/
 $ git checkout release/1.9.x
 $ ./build.sh
 $ cd ./build/contracts/
@@ -65,11 +65,9 @@ The command line to launch the script, make sure you replace `FOC_OLD_CONTRACTS_
 
 ```bash
 $ cd ~
-$ git clone https://github.com/FOC/eos.git
+$ git clone https://github.com/fisho-park/fishochain.git
 $ cd ./eos/tutorials/bios-boot-tutorial/
 $ python3 bios-boot-tutorial.py --clfoc="clfoc --wallet-url http://127.0.0.1:6666 " --nodefoc=nodefoc --kfocd=kfocd --contracts-dir="FOC_CONTRACTS_DIRECTORY" --old-contracts-dir="FOC_OLD_CONTRACTS_DIRECTORY" -w -a
 ```
 
-6. At this point, when the script has finished running without error, you have a functional FOC based blockchain running locally with an latest version of `eosio.system` contract, 31 block producers out of which 21 active, `eosio` account resigned, 200k+ accounts with staked tokens, and votes allocated to each block producer. Enjoy exploring your freshly booted blockchain.
-
-See [FOC Documentation Wiki: Tutorial - Bios Boot](https://github.com/FOC/eos/wiki/Tutorial-Bios-Boot-Sequence) for additional information.
+6. At this point, when the script has finished running without error, you have a functional FOC based blockchain running locally with an latest version of `foc.system` contract, 31 block producers out of which 3 active, `foc` account resigned, 200k+ accounts with staked tokens, and votes allocated to each block producer. Enjoy exploring your freshly booted blockchain.

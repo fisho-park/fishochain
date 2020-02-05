@@ -3,7 +3,7 @@ set -eo pipefail
 VERSION=2.1
 ##########################################################################
 # This is the FOC automated install script for Linux and Mac OS.
-# This file was downloaded from https://github.com/FOC/eos
+# This file was downloaded from https://github.com/fisho-park/eos
 #
 # Copyright (c) 2017, Respective Authors all rights reserved.
 #
@@ -29,7 +29,7 @@ VERSION=2.1
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-# https://github.com/FOC/eos/blob/master/LICENSE.txt
+# https://github.com/fisho-park/eos/blob/master/LICENSE.txt
 ##########################################################################
 
 # Ensure we're in the repo root and not inside of scripts

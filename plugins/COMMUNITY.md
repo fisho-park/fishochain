@@ -7,7 +7,7 @@ Third parties are encouraged to make pull requests to this file (`develop` branc
 | Description | URL |
 | ----------- | --- |
 | BP Heartbeat  | https://github.com/bancorprotocol/eos-producer-heartbeat-plugin |
-| ElasticSearch | https://github.com/FOCLaoMao/elasticsearch_plugin |
+| ElasticSearch | https://github.com/fisho-parkLaoMao/elasticsearch_plugin |
 | Kafka | https://github.com/TP-Lab/kafka_plugin |
 | MySQL | https://github.com/eosBLACK/eosio_mysqldb_plugin |
 | SQL | https://github.com/asiniscalchi/eosio_sql_plugin |
@@ -18,7 +18,7 @@ Third parties are encouraged to make pull requests to this file (`develop` branc
 | Mongo History API | https://github.com/CryptoLions/FOC-mongo-history-API |
 | State History API | https://github.com/acoutts/FOC-state-history-API |
 | Hyperion History API | https://github.com/eosrio/Hyperion-History-API |
-| Chronicle	| https://github.com/FOCChronicleProject/eos-chronicle |
+| Chronicle	| https://github.com/fisho-parkChronicleProject/eos-chronicle |
 
 ## DISCLAIMER:
 

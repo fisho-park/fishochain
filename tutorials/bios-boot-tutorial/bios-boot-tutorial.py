@@ -17,16 +17,16 @@ unlockTimeout = 999999999
 fastUnstakeSystem = './fast.refund/eosio.system/eosio.system.wasm'
 
 systemAccounts = [
-    'eosio.bpay',
-    'eosio.msig',
-    'eosio.names',
-    'eosio.ram',
-    'eosio.ramfee',
-    'eosio.saving',
-    'eosio.stake',
-    'eosio.token',
-    'eosio.vpay',
-    'eosio.rex',
+    'foc.bpay',
+    'foc.msig',
+    'foc.names',
+    'foc.ram',
+    'foc.ramfee',
+    'foc.saving',
+    'foc.stake',
+    'foc.token',
+    'foc.vpay',
+    'foc.rex',
 ]
 
 def jsonArg(a):
@@ -45,6 +45,7 @@ def retry(args):
         logFile.write(args + '\n')
         if subprocess.call(args, shell=True):
             print('*** Retry')
+            sleep(2)
         else:
             break
 
@@ -72,7 +73,7 @@ def startWallet():
     run('mkdir -p ' + os.path.abspath(args.wallet_dir))
     background(args.kfocd + ' --unlock-timeout %d --http-server-address 127.0.0.1:6666 --wallet-dir %s' % (unlockTimeout, os.path.abspath(args.wallet_dir)))
     sleep(.4)
-    run(args.clfoc + 'wallet create --to-console')
+    run(args.clfoc + 'wallet create -f %s/default_pwd' % (os.path.abspath(args.wallet_dir)))
 
 def importKeys():
     run(args.clfoc + 'wallet import --private-key ' + args.private_key)
@@ -101,28 +102,28 @@ def startNode(nodeIndex, account):
         '    --plugin eosio::history_api_plugin'
     )
     cmd = (
-        args.nodefoc +
-        '    --max-irreversible-block-age -1'
-        '    --max-transaction-time=1000'
-        '    --contracts-console'
-        '    --genesis-json ' + os.path.abspath(args.genesis) +
-        '    --blocks-dir ' + os.path.abspath(dir) + '/blocks'
-        '    --config-dir ' + os.path.abspath(dir) +
-        '    --data-dir ' + os.path.abspath(dir) +
-        '    --chain-state-db-size-mb 1024'
-        '    --http-server-address 127.0.0.1:' + str(8000 + nodeIndex) +
-        '    --p2p-listen-endpoint 127.0.0.1:' + str(9000 + nodeIndex) +
-        '    --max-clients ' + str(maxClients) +
-        '    --p2p-max-nodes-per-host ' + str(maxClients) +
-        '    --enable-stale-production'
-        '    --producer-name ' + account['name'] +
-        '    --private-key \'["' + account['pub'] + '","' + account['pvt'] + '"]\''
-        '    --plugin eosio::http_plugin'
-        '    --plugin eosio::chain_api_plugin'
-        '    --plugin eosio::chain_plugin'
-        '    --plugin eosio::producer_api_plugin'
-        '    --plugin eosio::producer_plugin' +
-        otherOpts)
+            args.nodefoc +
+            '    --max-irreversible-block-age -1'
+            '    --contracts-console'
+            '    --genesis-json ' + os.path.abspath(args.genesis) +
+            '    --blocks-dir ' + os.path.abspath(dir) + '/blocks'
+                                                         '    --config-dir ' + os.path.abspath(dir) +
+            '    --data-dir ' + os.path.abspath(dir) +
+            '    --chain-state-db-size-mb 1024'
+            '    --http-server-address 127.0.0.1:' + str(8000 + nodeIndex) +
+            '    --p2p-listen-endpoint 127.0.0.1:' + str(9000 + nodeIndex) +
+            '    --max-clients ' + str(maxClients) +
+            '    --p2p-max-nodes-per-host ' + str(maxClients) +
+            '    --enable-stale-production'
+            '    --max-transaction-time=10000'
+            '    --producer-name ' + account['name'] +
+            '    --private-key \'["' + account['pub'] + '","' + account['pvt'] + '"]\''
+                                                                                 '    --plugin eosio::http_plugin'
+                                                                                 '    --plugin eosio::chain_plugin'
+                                                                                 '    --plugin eosio::chain_api_plugin'
+                                                                                 '    --plugin eosio::producer_plugin'
+                                                                                 '    --plugin eosio::producer_api_plugin' +
+            otherOpts)
     with open(dir + 'stderr', mode='w') as f:
         f.write(cmd + '\n\n')
     background(cmd + '    2>>' + dir + 'stderr')
@@ -133,7 +134,7 @@ def startProducers(b, e):
 
 def createSystemAccounts():
     for a in systemAccounts:
-        run(args.clfoc + 'create account eosio ' + a + ' ' + args.public_key)
+        run(args.clfoc + 'create account foc ' + a + ' ' + args.public_key)
 
 def intToCurrency(i):
     return '%d.%04d %s' % (i // 10000, i % 10000, args.symbol)
@@ -172,10 +173,10 @@ def createStakedAccounts(b, e):
         stakeCpu = stake - stakeNet
         print('%s: total funds=%s, ram=%s, net=%s, cpu=%s, unstaked=%s' % (a['name'], intToCurrency(a['funds']), intToCurrency(ramFunds), intToCurrency(stakeNet), intToCurrency(stakeCpu), intToCurrency(unstaked)))
         assert(funds == ramFunds + stakeNet + stakeCpu + unstaked)
-        retry(args.clfoc + 'system newaccount --transfer eosio %s %s --stake-net "%s" --stake-cpu "%s" --buy-ram "%s"   ' %
-            (a['name'], a['pub'], intToCurrency(stakeNet), intToCurrency(stakeCpu), intToCurrency(ramFunds)))
+        retry(args.clfoc + 'system newaccount --transfer foc %s %s --stake-net "%s" --stake-cpu "%s" --buy-ram "%s"   ' %
+              (a['name'], a['pub'], intToCurrency(stakeNet), intToCurrency(stakeCpu), intToCurrency(ramFunds)))
         if unstaked:
-            retry(args.clfoc + 'transfer eosio %s "%s"' % (a['name'], intToCurrency(unstaked)))
+            retry(args.clfoc + 'transfer foc %s "%s"' % (a['name'], intToCurrency(unstaked)))
 
 def regProducers(b, e):
     for i in range(b, e):
@@ -196,7 +197,7 @@ def vote(b, e):
         retry(args.clfoc + 'system voteproducer prods ' + voter + ' ' + prods)
 
 def claimRewards():
-    table = getJsonOutput(args.clfoc + 'get table eosio eosio producers -l 100')
+    table = getJsonOutput(args.clfoc + 'get table foc foc producers -l 100')
     times = []
     for row in table['rows']:
         if row['unpaid_blocks'] and not row['last_claim_time']:
@@ -244,11 +245,11 @@ def msigProposeReplaceSystem(proposer, proposalName):
     requestedPermissions = []
     for i in range(firstProducer, firstProducer + numProducers):
         requestedPermissions.append({'actor': accounts[i]['name'], 'permission': 'active'})
-    trxPermissions = [{'actor': 'eosio', 'permission': 'active'}]
+    trxPermissions = [{'actor': 'foc', 'permission': 'active'}]
     with open(fastUnstakeSystem, mode='rb') as f:
-        setcode = {'account': 'eosio', 'vmtype': 0, 'vmversion': 0, 'code': f.read().hex()}
+        setcode = {'account': 'foc', 'vmtype': 0, 'vmversion': 0, 'code': f.read().hex()}
     run(args.clfoc + 'multisig propose ' + proposalName + jsonArg(requestedPermissions) +
-        jsonArg(trxPermissions) + 'eosio setcode' + jsonArg(setcode) + ' -p ' + proposer)
+        jsonArg(trxPermissions) + 'foc setcode' + jsonArg(setcode) + ' -p ' + proposer)
 
 def msigApproveReplaceSystem(proposer, proposalName):
     for i in range(firstProducer, firstProducer + numProducers):
@@ -260,7 +261,7 @@ def msigExecReplaceSystem(proposer, proposalName):
     retry(args.clfoc + 'multisig exec ' + proposer + ' ' + proposalName + ' -p ' + proposer)
 
 def msigReplaceSystem():
-    run(args.clfoc + 'push action eosio buyrambytes' + jsonArg(['eosio', accounts[0]['name'], 200000]) + '-p eosio')
+    run(args.clfoc + 'push action foc buyrambytes' + jsonArg(['foc', accounts[0]['name'], 200000]) + '-p foc')
     sleep(1)
     msigProposeReplaceSystem(accounts[0]['name'], 'fast.unstake')
     sleep(1)
@@ -285,67 +286,68 @@ def stepStartWallet():
     startWallet()
     importKeys()
 def stepStartBoot():
-    startNode(0, {'name': 'eosio', 'pvt': args.private_key, 'pub': args.public_key})
-    sleep(1.5)
+    startNode(0, {'name': 'foc', 'pvt': args.private_key, 'pub': args.public_key})
+    sleep(2)
 def stepInstallSystemContracts():
-    run(args.clfoc + 'set contract eosio.token ' + args.contracts_dir + '/eosio.token/')
-    run(args.clfoc + 'set contract eosio.msig ' + args.contracts_dir + '/eosio.msig/')
+    run(args.clfoc + 'set contract foc.token ' + args.contracts_dir + '/eosio.token/')
+    run(args.clfoc + 'set contract foc.msig ' + args.contracts_dir + '/eosio.msig/')
+    sleep(2)
 def stepCreateTokens():
-    run(args.clfoc + 'push action eosio.token create \'["eosio", "10000000000.0000 %s"]\' -p eosio.token' % (args.symbol))
+    retry(args.clfoc + 'push action foc.token create \'["foc", "10000000000.0000 %s"]\' -p foc.token' % (args.symbol))
     totalAllocation = allocateFunds(0, len(accounts))
-    run(args.clfoc + 'push action eosio.token issue \'["eosio", "%s", "memo"]\' -p eosio' % intToCurrency(totalAllocation))
-    sleep(1)
+    run(args.clfoc + 'push action foc.token issue \'["foc", "%s", "memo"]\' -p foc' % intToCurrency(totalAllocation))
+    sleep(2)
 def stepSetSystemContract():
-    # All of the protocol upgrade features introduced in v1.8 first require a special protocol 
-    # feature (codename PREACTIVATE_FEATURE) to be activated and for an updated version of the system 
-    # contract that makes use of the functionality introduced by that feature to be deployed. 
+    # All of the protocol upgrade features introduced in v1.8 first require a special protocol
+    # feature (codename PREACTIVATE_FEATURE) to be activated and for an updated version of the system
+    # contract that makes use of the functionality introduced by that feature to be deployed.
 
     # activate PREACTIVATE_FEATURE before installing eosio.system
-    retry('curl -X POST http://127.0.0.1:%d' % args.http_port + 
-        '/v1/producer/schedule_protocol_feature_activations ' +
-        '-d \'{"protocol_features_to_activate": ["0ec7e080177b2c02b278d5088611686b49d739925a92d9bfcacd7fc6b74053bd"]}\'')
+    retry('curl -X POST http://127.0.0.1:%d' % args.http_port +
+          '/v1/producer/schedule_protocol_feature_activations ' +
+          '-d \'{"protocol_features_to_activate": ["0ec7e080177b2c02b278d5088611686b49d739925a92d9bfcacd7fc6b74053bd"]}\'')
     sleep(3)
 
     # install eosio.system the older version first
-    retry(args.clfoc + 'set contract eosio ' + args.old_contracts_dir + '/eosio.system/')
+    retry(args.clfoc + 'set contract foc ' + args.old_contracts_dir + '/eosio.system/')
     sleep(3)
 
     # activate remaining features
     # GET_SENDER
-    retry(args.clfoc + 'push action eosio activate \'["f0af56d2c5a48d60a4a5b5c903edfb7db3a736a94ed589d0b797df33ff9d3e1d"]\' -p eosio')
+    retry(args.clfoc + 'push action foc activate \'["f0af56d2c5a48d60a4a5b5c903edfb7db3a736a94ed589d0b797df33ff9d3e1d"]\' -p foc')
     # FORWARD_SETCODE
-    retry(args.clfoc + 'push action eosio activate \'["2652f5f96006294109b3dd0bbde63693f55324af452b799ee137a81a905eed25"]\' -p eosio')
+    retry(args.clfoc + 'push action foc activate \'["2652f5f96006294109b3dd0bbde63693f55324af452b799ee137a81a905eed25"]\' -p foc')
     # ONLY_BILL_FIRST_AUTHORIZER
-    retry(args.clfoc + 'push action eosio activate \'["8ba52fe7a3956c5cd3a656a3174b931d3bb2abb45578befc59f283ecd816a405"]\' -p eosio')
+    retry(args.clfoc + 'push action foc activate \'["8ba52fe7a3956c5cd3a656a3174b931d3bb2abb45578befc59f283ecd816a405"]\' -p foc')
     # RESTRICT_ACTION_TO_SELF
-    retry(args.clfoc + 'push action eosio activate \'["ad9e3d8f650687709fd68f4b90b41f7d825a365b02c23a636cef88ac2ac00c43"]\' -p eosio@active')
+    retry(args.clfoc + 'push action foc activate \'["ad9e3d8f650687709fd68f4b90b41f7d825a365b02c23a636cef88ac2ac00c43"]\' -p foc@active')
     # DISALLOW_EMPTY_PRODUCER_SCHEDULE
-    retry(args.clfoc + 'push action eosio activate \'["68dcaa34c0517d19666e6b33add67351d8c5f69e999ca1e37931bc410a297428"]\' -p eosio@active')
-     # FIX_LINKAUTH_RESTRICTION
-    retry(args.clfoc + 'push action eosio activate \'["e0fb64b1085cc5538970158d05a009c24e276fb94e1a0bf6a528b48fbc4ff526"]\' -p eosio@active')
-     # REPLACE_DEFERRED
-    retry(args.clfoc + 'push action eosio activate \'["ef43112c6543b88db2283a2e077278c315ae2c84719a8b25f25cc88565fbea99"]\' -p eosio@active')
+    retry(args.clfoc + 'push action foc activate \'["68dcaa34c0517d19666e6b33add67351d8c5f69e999ca1e37931bc410a297428"]\' -p foc@active')
+    # FIX_LINKAUTH_RESTRICTION
+    retry(args.clfoc + 'push action foc activate \'["e0fb64b1085cc5538970158d05a009c24e276fb94e1a0bf6a528b48fbc4ff526"]\' -p foc@active')
+    # REPLACE_DEFERRED
+    retry(args.clfoc + 'push action foc activate \'["ef43112c6543b88db2283a2e077278c315ae2c84719a8b25f25cc88565fbea99"]\' -p foc@active')
     # NO_DUPLICATE_DEFERRED_ID
-    retry(args.clfoc + 'push action eosio activate \'["4a90c00d55454dc5b059055ca213579c6ea856967712a56017487886a4d4cc0f"]\' -p eosio@active')
+    retry(args.clfoc + 'push action foc activate \'["4a90c00d55454dc5b059055ca213579c6ea856967712a56017487886a4d4cc0f"]\' -p foc@active')
     # ONLY_LINK_TO_EXISTING_PERMISSION
-    retry(args.clfoc + 'push action eosio activate \'["1a99a59d87e06e09ec5b028a9cbb7749b4a5ad8819004365d02dc4379a8b7241"]\' -p eosio@active')
+    retry(args.clfoc + 'push action foc activate \'["1a99a59d87e06e09ec5b028a9cbb7749b4a5ad8819004365d02dc4379a8b7241"]\' -p foc@active')
     # RAM_RESTRICTIONS
-    retry(args.clfoc + 'push action eosio activate \'["4e7bf348da00a945489b2a681749eb56f5de00b900014e137ddae39f48f69d67"]\' -p eosio@active')
+    retry(args.clfoc + 'push action foc activate \'["4e7bf348da00a945489b2a681749eb56f5de00b900014e137ddae39f48f69d67"]\' -p foc@active')
     # WEBAUTHN_KEY
-    retry(args.clfoc + 'push action eosio activate \'["4fca8bd82bbd181e714e283f83e1b45d95ca5af40fb89ad3977b653c448f78c2"]\' -p eosio@active')
+    retry(args.clfoc + 'push action foc activate \'["4fca8bd82bbd181e714e283f83e1b45d95ca5af40fb89ad3977b653c448f78c2"]\' -p foc@active')
     # WTMSIG_BLOCK_SIGNATURES
-    retry(args.clfoc + 'push action eosio activate \'["299dcb6af692324b899b39f16d5a530a33062804e41f09dc97e9f156b4476707"]\' -p eosio@active')
-    sleep(1)
+    retry(args.clfoc + 'push action foc activate \'["299dcb6af692324b899b39f16d5a530a33062804e41f09dc97e9f156b4476707"]\' -p foc@active')
+    sleep(2)
 
-    run(args.clfoc + 'push action eosio setpriv' + jsonArg(['eosio.msig', 1]) + '-p eosio@active')
+    retry(args.clfoc + 'push action foc setpriv' + jsonArg(['foc.msig', 1]) + '-p foc@active')
 
     # install eosio.system latest version
-    retry(args.clfoc + 'set contract eosio ' + args.contracts_dir + '/eosio.system/')
+    retry(args.clfoc + 'set contract foc ' + args.contracts_dir + '/eosio.system/')
     sleep(3)
 
 def stepInitSystemContract():
-    run(args.clfoc + 'push action eosio init' + jsonArg(['0', '4,' + args.symbol]) + '-p eosio@active')
-    sleep(1)
+    run(args.clfoc + 'push action foc init' + jsonArg(['0', '4,' + args.symbol]) + '-p foc@active')
+    sleep(2)
 def stepCreateStakedAccounts():
     createStakedAccounts(0, len(accounts))
 def stepRegProducers():
@@ -357,7 +359,7 @@ def stepStartProducers():
     sleep(args.producer_sync_delay)
 def stepVote():
     vote(0, 0 + args.num_voters)
-    sleep(1)
+    sleep(2)
     listProducers()
     sleep(5)
 def stepProxyVotes():
@@ -370,7 +372,7 @@ def stepTransfer():
     while True:
         randomTransfer(0, args.num_senders)
 def stepLog():
-    run('tail -n 60 ' + args.nodes_dir + '00-eosio/stderr')
+    run('tail -n 60 ' + args.nodes_dir + '00-foc/stderr')
 
 # Command Line Arguments
 
@@ -380,7 +382,7 @@ commands = [
     ('k', 'kill',               stepKillAll,                True,    "Kill all nodefoc and kfocd processes"),
     ('w', 'wallet',             stepStartWallet,            True,    "Start kfocd, create wallet, fill with keys"),
     ('b', 'boot',               stepStartBoot,              True,    "Start boot node"),
-    ('s', 'sys',                createSystemAccounts,       True,    "Create system accounts (eosio.*)"),
+    ('s', 'sys',                createSystemAccounts,       True,    "Create system accounts (foc.*)"),
     ('c', 'contracts',          stepInstallSystemContracts, True,    "Install system contracts (token, msig)"),
     ('t', 'tokens',             stepCreateTokens,           True,    "Create tokens"),
     ('S', 'sys-contract',       stepSetSystemContract,      True,    "Set system contract"),
@@ -391,7 +393,7 @@ commands = [
     ('v', 'vote',               stepVote,                   True,    "Vote for producers"),
     ('R', 'claim',              claimRewards,               True,    "Claim rewards"),
     ('x', 'proxy',              stepProxyVotes,             True,    "Proxy votes"),
-    ('q', 'resign',             stepResign,                 True,    "Resign eosio"),
+    ('q', 'resign',             stepResign,                 True,    "Resign foc"),
     ('m', 'msg-replace',        msigReplaceSystem,          False,   "Replace system contract using msig"),
     ('X', 'xfer',               stepTransfer,               False,   "Random transfer tokens (infinite loop)"),
     ('l', 'log',                stepLog,                    True,    "Show tail of node's log"),
@@ -399,7 +401,7 @@ commands = [
 
 parser.add_argument('--public-key', metavar='', help="FOC Public Key", default='FOC8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr', dest="public_key")
 parser.add_argument('--private-Key', metavar='', help="FOC Private Key", default='5K463ynhZoCDDa4RDcr63cUwWLTnKqmdcoTKTHBjqoKfv4u5V7p', dest="private_key")
-parser.add_argument('--clfoc', metavar='', help="Cleos command", default='../../build/programs/clfoc/clfoc --wallet-url http://127.0.0.1:6666 ')
+parser.add_argument('--clfoc', metavar='', help="Clfoc command", default='../../build/programs/clfoc/clfoc --wallet-url http://127.0.0.1:6666 ')
 parser.add_argument('--nodefoc', metavar='', help="Path to nodefoc binary", default='../../build/programs/nodefoc/nodefoc')
 parser.add_argument('--kfocd', metavar='', help="Path to kfocd binary", default='../../build/programs/kfocd/kfocd')
 parser.add_argument('--contracts-dir', metavar='', help="Path to latest contracts directory", default='../../build/contracts/')
@@ -408,13 +410,13 @@ parser.add_argument('--nodes-dir', metavar='', help="Path to nodes directory", d
 parser.add_argument('--genesis', metavar='', help="Path to genesis.json", default="./genesis.json")
 parser.add_argument('--wallet-dir', metavar='', help="Path to wallet directory", default='./wallet/')
 parser.add_argument('--log-path', metavar='', help="Path to log file", default='./output.log')
-parser.add_argument('--symbol', metavar='', help="The eosio.system symbol", default='SYS')
+parser.add_argument('--symbol', metavar='', help="The foc.system symbol", default='FOC')
 parser.add_argument('--user-limit', metavar='', help="Max number of users. (0 = no limit)", type=int, default=3000)
 parser.add_argument('--max-user-keys', metavar='', help="Maximum user keys to import into wallet", type=int, default=10)
 parser.add_argument('--ram-funds', metavar='', help="How much funds for each user to spend on ram", type=float, default=0.1)
 parser.add_argument('--min-stake', metavar='', help="Minimum stake before allocating unstaked funds", type=float, default=0.9)
 parser.add_argument('--max-unstaked', metavar='', help="Maximum unstaked funds", type=float, default=10)
-parser.add_argument('--producer-limit', metavar='', help="Maximum number of producers. (0 = no limit)", type=int, default=0)
+parser.add_argument('--producer-limit', metavar='', help="Maximum number of producers. (0 = no limit)", type=int, default=4)
 parser.add_argument('--min-producer-funds', metavar='', help="Minimum producer funds", type=float, default=1000.0000)
 parser.add_argument('--num-producers-vote', metavar='', help="Number of producers for which each user votes", type=int, default=20)
 parser.add_argument('--num-voters', metavar='', help="Number of voters", type=int, default=10)
@@ -431,7 +433,7 @@ for (flag, command, function, inAll, help) in commands:
         parser.add_argument('-' + flag, '--' + command, action='store_true', help=help, dest=command)
     else:
         parser.add_argument('--' + command, action='store_true', help=help, dest=command)
-        
+
 args = parser.parse_args()
 
 args.clfoc += '--url http://127.0.0.1:%d ' % args.http_port

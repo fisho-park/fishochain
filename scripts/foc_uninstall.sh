@@ -55,7 +55,7 @@ cd $( dirname "${BASH_SOURCE[0]}" )/..
 # Load bash script helper functions
 . ./scripts/helpers/eosio.sh
 
-# Support relative paths : https://github.com/FOC/eos/issues/7560
+# Support relative paths : https://github.com/fisho-park/eos/issues/7560
 ( [[ ! -z $INSTALL_LOCATION ]] && [[ ! $INSTALL_LOCATION =~ ^\/ ]] ) && export INSTALL_LOCATION="${CURRENT_WORKING_DIR}/$INSTALL_LOCATION"
 
 INSTALL_PATHS=()
@@ -80,7 +80,7 @@ export FOC_INSTALL_DIR=${INSTALL_LOCATION:-$FOC_INSTALL_DIR}
 if [[ ! -d "${FOC_INSTALL_DIR}" ]]; then
    echo "[FOC installation ${COLOR_YELLOW}NOT${COLOR_NC} found in ${FOC_INSTALL_DIR}]"
 else
-   # As of 1.8.0, we're using a versioned directories under home: https://github.com/FOC/eos/issues/6940
+   # As of 1.8.0, we're using a versioned directories under home: https://github.com/fisho-park/eos/issues/6940
    echo "[FOC installation found: ${FOC_INSTALL_DIR}]" && INSTALL_PATHS+=("${FOC_INSTALL_DIR}") # FOC_INSTALL_DIR set in .environment
    while true; do
       [[ $NONINTERACTIVE == false ]] && read -p "Do you wish to remove the installation in ${FOC_INSTALL_DIR}? (y/n) " PROCEED
