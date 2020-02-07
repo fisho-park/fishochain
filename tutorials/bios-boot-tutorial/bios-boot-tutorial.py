@@ -107,7 +107,7 @@ def startNode(nodeIndex, account):
             '    --contracts-console'
             '    --genesis-json ' + os.path.abspath(args.genesis) +
             '    --blocks-dir ' + os.path.abspath(dir) + '/blocks'
-                                                         '    --config-dir ' + os.path.abspath(dir) +
+            '    --config-dir ' + os.path.abspath(dir) +
             '    --data-dir ' + os.path.abspath(dir) +
             '    --chain-state-db-size-mb 1024'
             '    --http-server-address 127.0.0.1:' + str(8000 + nodeIndex) +
@@ -115,14 +115,15 @@ def startNode(nodeIndex, account):
             '    --max-clients ' + str(maxClients) +
             '    --p2p-max-nodes-per-host ' + str(maxClients) +
             '    --enable-stale-production'
-            '    --max-transaction-time=10000'
+            '    --max-transaction-time 200000'
+            '    --http-max-response-time-ms 90000'
             '    --producer-name ' + account['name'] +
             '    --private-key \'["' + account['pub'] + '","' + account['pvt'] + '"]\''
-                                                                                 '    --plugin eosio::http_plugin'
-                                                                                 '    --plugin eosio::chain_plugin'
-                                                                                 '    --plugin eosio::chain_api_plugin'
-                                                                                 '    --plugin eosio::producer_plugin'
-                                                                                 '    --plugin eosio::producer_api_plugin' +
+            '    --plugin eosio::http_plugin'
+            '    --plugin eosio::chain_plugin'
+            '    --plugin eosio::chain_api_plugin'
+            '    --plugin eosio::producer_plugin'
+            '    --plugin eosio::producer_api_plugin' +
             otherOpts)
     with open(dir + 'stderr', mode='w') as f:
         f.write(cmd + '\n\n')
@@ -214,7 +215,7 @@ def proxyVotes(b, e):
         retry(args.clfoc + 'system voteproducer proxy ' + voter + ' ' + proxy)
 
 def updateAuth(account, permission, parent, controller):
-    run(args.clfoc + 'push action eosio updateauth' + jsonArg({
+    run(args.clfoc + 'push action foc updateauth' + jsonArg({
         'account': account,
         'permission': permission,
         'parent': parent,
@@ -287,7 +288,7 @@ def stepStartWallet():
     importKeys()
 def stepStartBoot():
     startNode(0, {'name': 'foc', 'pvt': args.private_key, 'pub': args.public_key})
-    sleep(2)
+    sleep(4)
 def stepInstallSystemContracts():
     run(args.clfoc + 'set contract foc.token ' + args.contracts_dir + '/eosio.token/')
     run(args.clfoc + 'set contract foc.msig ' + args.contracts_dir + '/eosio.msig/')
@@ -309,7 +310,7 @@ def stepSetSystemContract():
     sleep(3)
 
     # install eosio.system the older version first
-    retry(args.clfoc + 'set contract foc ' + args.old_contracts_dir + '/eosio.system/')
+    retry(args.clfoc + 'set contract foc ' + args.old_contracts_dir + '/eosio.system/ -x 90s')
     sleep(3)
 
     # activate remaining features
@@ -342,7 +343,7 @@ def stepSetSystemContract():
     retry(args.clfoc + 'push action foc setpriv' + jsonArg(['foc.msig', 1]) + '-p foc@active')
 
     # install eosio.system latest version
-    retry(args.clfoc + 'set contract foc ' + args.contracts_dir + '/eosio.system/')
+    retry(args.clfoc + 'set contract foc ' + args.contracts_dir + '/eosio.system/ -x 90s')
     sleep(3)
 
 def stepInitSystemContract():
@@ -400,7 +401,7 @@ commands = [
 ]
 
 parser.add_argument('--public-key', metavar='', help="FOC Public Key", default='FOC8Znrtgwt8TfpmbVpTKvA2oB8Nqey625CLN8bCN3TEbgx86Dsvr', dest="public_key")
-parser.add_argument('--private-Key', metavar='', help="FOC Private Key", default='5K463ynhZoCDDa4RDcr63cUwWLTnKqmdcoTKTHBjqoKfv4u5V7p', dest="private_key")
+parser.add_argument('--private-key', metavar='', help="FOC Private Key", default='5K463ynhZoCDDa4RDcr63cUwWLTnKqmdcoTKTHBjqoKfv4u5V7p', dest="private_key")
 parser.add_argument('--clfoc', metavar='', help="Clfoc command", default='../../build/programs/clfoc/clfoc --wallet-url http://127.0.0.1:6666 ')
 parser.add_argument('--nodefoc', metavar='', help="Path to nodefoc binary", default='../../build/programs/nodefoc/nodefoc')
 parser.add_argument('--kfocd', metavar='', help="Path to kfocd binary", default='../../build/programs/kfocd/kfocd')
@@ -436,7 +437,7 @@ for (flag, command, function, inAll, help) in commands:
 
 args = parser.parse_args()
 
-args.clfoc += '--url http://127.0.0.1:%d ' % args.http_port
+args.clfoc += ' --url http://127.0.0.1:%d ' % args.http_port
 
 logFile = open(args.log_path, 'a')
 
