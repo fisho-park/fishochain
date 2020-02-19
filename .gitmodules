@@ -11,7 +11,7 @@ url=https://github.com/eosio/chainbase
 	url = https://github.com/eosio/berkeley-softfloat-3
 [submodule "libraries/fc"]
 	path = libraries/fc
-url=https://git.lothlorien.cn/FishoPark/fc.git
+url=https://github.com/fisho-park/fc.git
 [submodule "libraries/wabt"]
 	path = libraries/wabt
 	url = https://github.com/EOSIO/wabt
