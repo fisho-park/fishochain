@@ -1,8 +1,8 @@
-set(VENDOR "block.one")
-set(PROJECT_NAME "eosio")
+set(VENDOR "fisho")
+set(PROJECT_NAME "fishochain")
 set(DESC "Software for the FOC network")
-set(URL "https://github.com/eosio/eos")
-set(EMAIL "support@block.one")
+set(URL "https://github.com/fisho-park/fishochain")
+set(EMAIL "")
 
 configure_file(${CMAKE_SOURCE_DIR}/scripts/generate_package.sh.in ${CMAKE_BINARY_DIR}/packages/generate_package.sh @ONLY)
 configure_file(${CMAKE_SOURCE_DIR}/scripts/generate_bottle.sh ${CMAKE_BINARY_DIR}/packages/generate_bottle.sh COPYONLY)

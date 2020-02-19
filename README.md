@@ -20,7 +20,7 @@ Some of the groundbreaking features of FOC include:
 
 ## Disclaimer
 
-Block.one is neither launching nor operating any initial public blockchains based upon the FOC software. This release refers only to version 1.0 of our open source software. We caution those who wish to use blockchains built on FOC to carefully vet the companies and organizations launching blockchains based on FOC before disclosing any private keys to their derivative software.
+Fisho is neither launching nor operating any initial public blockchains based upon the FOC software. This release refers only to version 1.0 of our open source software. We caution those who wish to use blockchains built on FOC to carefully vet the companies and organizations launching blockchains based on FOC before disclosing any private keys to their derivative software.
 
 ## Testnets
 
@@ -44,7 +44,7 @@ FOC currently supports the following operating systems:
 
 ## License
 
-FOC is released under the open source [MIT](./LICENSE) license and is offered “AS IS” without warranty of any kind, express or implied. Any security provided by the FOC software depends in part on how it is used, configured, and deployed. FOC is built upon many third-party libraries such as WABT (Apache License) and WAVM (BSD 3-clause) which are also provided “AS IS” without warranty of any kind. Without limiting the generality of the foregoing, Block.one makes no representation or guarantee that FOC or any third-party libraries will perform as intended or will be free of errors, bugs or faulty code. Both may fail in large or small ways that could completely or partially limit functionality or compromise computer systems. If you use or implement FOC, you do so at your own risk. In no event will Block.one be liable to any party for any damages whatsoever, even if it had been advised of the possibility of damage.  
+FOC is released under the open source [MIT](./LICENSE) license and is offered “AS IS” without warranty of any kind, express or implied. Any security provided by the FOC software depends in part on how it is used, configured, and deployed. FOC is built upon many third-party libraries such as WABT (Apache License) and WAVM (BSD 3-clause) which are also provided “AS IS” without warranty of any kind. Without limiting the generality of the foregoing, Fisho makes no representation or guarantee that FOC or any third-party libraries will perform as intended or will be free of errors, bugs or faulty code. Both may fail in large or small ways that could completely or partially limit functionality or compromise computer systems. If you use or implement FOC, you do so at your own risk. In no event will fisho be liable to any party for any damages whatsoever, even if it had been advised of the possibility of damage.  
 
 ## Important
 
