@@ -6,7 +6,7 @@ FOC_PREFIX=${PREFIX}/${SUBPREFIX}
 mkdir -p ${PREFIX}/bin/
 #mkdir -p ${PREFIX}/lib/cmake/${PROJECT}
 mkdir -p ${FOC_PREFIX}/bin
-mkdir -p ${FOC_PREFIX}/licenses/eosio
+mkdir -p ${FOC_PREFIX}/licenses/foc
 #mkdir -p ${FOC_PREFIX}/include
 #mkdir -p ${FOC_PREFIX}/lib/cmake/${PROJECT}
 #mkdir -p ${FOC_PREFIX}/cmake
@@ -16,7 +16,7 @@ mkdir -p ${FOC_PREFIX}/licenses/eosio
 cp -R ${BUILD_DIR}/bin/* ${FOC_PREFIX}/bin  || exit 1
 
 # install licenses
-cp -R ${BUILD_DIR}/licenses/eosio/* ${FOC_PREFIX}/licenses || exit 1
+cp -R ${BUILD_DIR}/licenses/foc/* ${FOC_PREFIX}/licenses || exit 1
 
 # install libraries
 #cp -R ${BUILD_DIR}/lib/* ${FOC_PREFIX}/lib

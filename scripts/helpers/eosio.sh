@@ -118,10 +118,10 @@ function previous-install-prompt() {
 }
 
 function resources() {
-    echo "${COLOR_CYAN}FOC website:${COLOR_NC} https://eos.io"
-    echo "${COLOR_CYAN}FOC Telegram channel:${COLOR_NC} https://t.me/FOCProject"
-    echo "${COLOR_CYAN}FOC resources:${COLOR_NC} https://eos.io/resources/"
-    echo "${COLOR_CYAN}FOC Stack Exchange:${COLOR_NC} https://eosio.stackexchange.com"
+    echo "${COLOR_CYAN}FOC website:${COLOR_NC} https://www.fishotech.com"
+    echo "${COLOR_CYAN}FOC Telegram channel:${COLOR_NC} "
+    echo "${COLOR_CYAN}FOC resources:${COLOR_NC} "
+    echo "${COLOR_CYAN}FOC Stack Exchange:${COLOR_NC} "
 }
 
 function print_supported_linux_distros_and_exit() {
